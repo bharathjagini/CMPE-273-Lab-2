@@ -1,0 +1,58 @@
+.center-divider .dashboard-expenses .totalBalances .balance_summary {
+  font-size: 0px;
+  margin: -10px -15px 0;
+  padding: 7px 0 2px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  color: #999;
+  text-align: center;
+}
+.totalBalances {
+  position: relative;
+  padding: 35px 15px;
+}
+.balance_summary .block {
+  display: inline-block;
+  width: 175px;
+  text-align: center;
+  padding: 0 28.5px;
+  border-left: 1px solid #ddd;
+  line-height: 16px;
+  font-size: 13px;
+}
+.negative{
+  color:red
+}
+.youOwed{
+  
+}
+.oweContainer{
+  display: grid;
+  grid-template-columns: 400px 300px;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "owe owed"
+    "owe owed"
+    "owe owed"
+    "owe owed"
+    "owe owed" ;
+} 
+.oweFlexContainer {
+  display: flex;
+  flex-flow: column wrap;
+}
+.owedFlexContainer {
+  display: flex;
+  flex-flow: column wrap;
+}
+.owe{
+  display: flex;
+  flex-flow: column wrap;
+}
+.owed{
+  display: flex;
+  flex-flow: column wrap;
+}
+.balance_summary{
+ width:700px
+}

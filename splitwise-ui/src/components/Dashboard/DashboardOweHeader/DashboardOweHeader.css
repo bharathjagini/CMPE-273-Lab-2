@@ -1,0 +1,12 @@
+h2 {
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px !important;
+  /* line-height: 38px; */
+  height: 18px;
+  color: #999;
+  padding: 5px 0;
+  vertical-align: middle;
+}

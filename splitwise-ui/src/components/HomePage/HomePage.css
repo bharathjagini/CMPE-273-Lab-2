@@ -1,0 +1,9 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 200px 900px 150px;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "left-side center-area right-side "
+    "left-side center-area right-side"
+    "left-side center-area right-side";
+}

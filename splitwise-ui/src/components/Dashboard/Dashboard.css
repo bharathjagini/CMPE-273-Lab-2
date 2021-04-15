@@ -1,0 +1,18 @@
+.dashboard {
+  position: relative;
+  margin: 0;
+  padding-top: 33px;
+  background: #fff;
+  min-height: auto;
+  width: 40%;
+  width:700px;
+}
+.grid-container-owe {
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "owe owed"
+    "owe owed"
+    "owe owed" ;
+}

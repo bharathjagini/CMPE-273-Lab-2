@@ -1,0 +1,47 @@
+.profileGridContainer {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  grid-template-rows: auto;
+  grid-template-areas: "imageSection personalDetailsSection configSection ";
+}
+h1 {
+  font-size: 30px;
+}
+.personalDetailsSection {
+  margin-top: 40px;
+}
+.editDetails {
+  color: blue;
+  cursor: pointer;
+}
+.editEmail {
+  margin-top: 10px;
+}
+.editPhn {
+  margin-top: 10px;
+}
+.configSection {
+  margin-top: 40px;
+}
+.drpdwn {
+  width: 220px;
+  /* margin-top: 10px; */
+}
+.newExp {
+  font-size: 12px;
+  color: #999;
+}
+.saveBtn {
+  margin-top: 20px;
+  background-color: #ff652f;
+  color: white;
+  border-radius: 5px;
+  font-size: 12px;
+  width: auto;
+
+  text-shadow: 0 -1px 0 #c83400;
+  border-color: #ff652f;
+  box-shadow: 0 2px 0 0 rgb(55 59 63 / 50%);
+
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

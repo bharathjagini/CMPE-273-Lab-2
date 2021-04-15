@@ -1,0 +1,337 @@
+.groupExpenses {
+  /* width:538px; */
+  font-size: 20px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.flex-item {
+  margin: 11px 0 0;
+  padding: 3px 8px 5px 5px;
+  font-size: 16px;
+  line-height: 40px;
+  width: 538px;
+  color: #333333;
+  border-bottom: 1px solid #eee;
+}
+.groupExpenseHeader {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 40px;
+  width: 538px;
+  position: relative;
+  z-index: 9;
+  background: #eee;
+  border-bottom: none;
+  padding: 13px 10px 10px;
+  border-bottom: 1px solid #ddd;
+}
+/* .expense {
+  text-align: right;
+  width: 100px;
+  padding: 11px 10px 12px 5px;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: top;
+  color: #aaa;
+  cursor: pointer;
+} */
+.expense-grid-container {
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: auto;
+  grid-template-areas: "expenseDesc expense ";
+}
+.amount {
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+}
+.expense {
+  display: grid;
+  grid-template-columns: 150px 150px;
+  grid-template-rows: auto;
+  grid-template-areas: "paid lent ";
+}
+.paid {
+  text-align: right;
+  width: 100px;
+  padding: 11px 10px 12px 5px;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: top;
+  color: #aaa;
+  cursor: pointer;
+}
+.lent {
+  text-align: right;
+  width: 100px;
+  padding: 11px 10px 12px 5px;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: top;
+  color: #aaa;
+  cursor: pointer;
+}
+.negative {
+  color: #ff652f;
+  font-weight: bold;
+  font-size: 16px;
+}
+.positive {
+  color: #5bc5a7;
+  font-weight: bold;
+  font-size: 16px;
+}
+.expenseSettleButtons .addExpBtn {
+  margin-top: 20px;
+  background-color: #ff652f;
+  color: white;
+  border-radius: 5px;
+  font-size: 18px;
+  width: auto;
+  text-shadow: 0 -1px 0 #c83400;
+  border-color: #ff652f;
+  box-shadow: 0 2px 0 0 rgb(55 59 63 / 50%);
+
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.expenseSettleButtons {
+  float: right;
+}
+/* .grpExpModal {
+  width: 400px;
+} */
+.content {
+  width: 352px;
+  margin-left: -176px;
+  display: block;
+  background-color: #fff;
+  position: relative;
+  top: 20%;
+  left: 50%;
+  height: 400px;
+}
+.popupHeader {
+  background: #5cc5a7;
+  color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #36977b;
+  text-shadow: 0 -1px 0 #318a71;
+  font-size: 18px;
+  font-weight: bold;
+}
+.closePopup {
+  float: right;
+  font-size: 28px;
+  margin-top: -3px;
+  color: #fff;
+  text-decoration: none;
+}
+.MuiSvgIcon-root {
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  font-size: 2.8rem;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  flex-shrink: 0;
+  user-select: none;
+}
+.grpExpDtls {
+  position: relative;
+  padding: 4px;
+  border-bottom: 1px solid #eee;
+  max-height: 250px;
+  overflow-y: auto;
+  font-size: 15px;
+}
+.groupButton {
+  border-radius: 20px;
+  font-size: 10px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.groupButton img {
+  height: 18px;
+  width: 18px;
+  margin-right: 4px;
+  margin-left: -7px;
+  /* margin-top: -1px; */
+  border: 1px solid #999;
+  display: inline-block;
+  float: left;
+  background: #fff;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+.expenseDtls .expImg {
+  float: left;
+  width: 64px;
+  height: 64px;
+  margin: 10px 16px 10px 0;
+  border-radius: 4px;
+  /* cursor: pointer; */
+  -webkit-box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+}
+.expenseDtls {
+  outline: none;
+  border: 0;
+  box-shadow: none !important;
+  text-align: left;
+  /* width: 177px; */
+  color: #333;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  padding-bottom: 2px;
+}
+.expenseDtls input.description {
+  font-size: 20px;
+  height: 24px;
+  border: 0px;
+  box-shadow: none !important;
+  /* line-height: 24px; */
+  margin-top: 10px;
+  margin-bottom: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-bottom: 1px dashed #ccc !important;
+  outline: none;
+}
+.expenseAmount {
+  font-size: 36px;
+  height: 40px;
+  border: 0px;
+  box-shadow: none !important;
+  /* line-height: 24px; */
+  margin-top: 10px;
+  margin-bottom: 4px;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-bottom: 1px dashed #ccc !important;
+  outline: none;
+  width: 181px;
+}
+.currency {
+  font-size: 20px;
+  color: #333;
+}
+
+.splitInfo {
+  text-align: center;
+  margin: 15px 0 10px;
+  font-size: 14px;
+}
+.youSplit {
+  border-radius: 40px;
+  border: 1px dashed #ccc;
+  color: #5cc5a7;
+  font-size: 20px;
+}
+.currentDate {
+  border-radius: 40px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+.grpNameBtn {
+  text-align: center;
+  border-radius: 40px;
+  margin-top: 10px;
+  margin: 5px;
+  padding: 0 5px;
+  border: 1px solid #ccc;
+  width: 130px;
+  font-size: 15px;
+}
+.grpName {
+  text-align: center;
+  border-bottom: 1px solid #ccc !important;
+}
+.modalButtons {
+  padding: 8px 10px;
+  float: right;
+  margin-top: 30px;
+}
+.cancelBtn {
+  background-color: #f6f6f6;
+  color: #333;
+  border-radius: 2px;
+  font-size: 15px;
+  margin-right: 5px;
+  padding: 9px 14px;
+}
+.saveBtnExp {
+  background: #5cc5a7;
+  color: #fff;
+  text-shadow: 0 -1px 0px #318a71;
+  font-size: 15px;
+  padding: 9px 14px;
+}
+.totalGroupExpenses {
+  display: grid;
+  grid-template-columns: 650px 150px;
+  grid-template-rows: auto;
+  grid-template-areas: "totalExpenses right-side ";
+}
+.right-side h2 {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 24px;
+  color: #999;
+}
+.expCmntContent {
+  width: 400px;
+  margin-left: -176px;
+  display: block;
+  background-color: #fff;
+  position: relative;
+  top: 20%;
+  left: 50%;
+  height: 400px;
+}
+.displayComments {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 6px 8px;
+  background: #fff;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+  width: 300px;
+}
+.deleteComment {
+  float: right;
+  color: #c00;
+  font-weight: bold;
+  font-size: 18px;
+  margin: -1px -1px 5px 5px;
+  cursor: pointer;
+}
+.expenseDesc .editExpBtn {
+  background-color: #ff652f;
+  color: white;
+  border-radius: 5px;
+  font-size: 10px;
+  line-height: 20px;
+  padding: 1px 6px;
+
+  text-shadow: 0 -1px 0 #c83400;
+  border-color: #ff652f;
+  box-shadow: 0 2px 0 0 rgb(55 59 63 / 50%);
+
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

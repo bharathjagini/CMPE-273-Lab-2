@@ -1,0 +1,36 @@
+.mygroup-grid-container {
+  display: grid;
+  grid-template-columns: 400px 400px;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "pending-invitations my-groups"
+    "pending-invitations my-groups"
+    "pending-invitations my-groups";
+}
+.flex-container {
+  display: flex;
+  flex-flow: column wrap;
+}
+.flex-item {
+  margin: 11px 0 0;
+  padding: 3px 8px 5px 5px;
+  font-size: 16px;
+  line-height: 21px;
+  color: #999;
+}
+.flex-item:hover {
+  background-color: rgb(236, 232, 232);
+}
+.acceptInvitation {
+  float: right;
+  background-color: green;
+  color: #fff;
+}
+.my-groups .flex-item{
+  width: 200px
+}
+.exitGroup{
+  float: right;
+  background-color: red;
+  color: #fff;
+}

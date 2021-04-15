@@ -1,0 +1,7 @@
+export const LOGIN = "LOGIN";
+export const SIGNUP = "SIGNUP";
+export const RESET = "RESET";
+export const CUSTDETAILSUPDATE="CUSTDETAILSUPDATE";
+export const CUSTGRPDETAILSUPDATE="CUSTGRPDETAILSUPDATE";
+export const PROFDTLS="PROFDTLS";
+

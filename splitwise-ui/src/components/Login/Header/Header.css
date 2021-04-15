@@ -1,0 +1,43 @@
+.toolbar .login {
+  cursor: pointer;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 #318970;
+  background-color: #5bc5a7;
+  padding: 4px 10px;
+  margin: 0px 4px 0px 5px;
+}
+
+.MuiButtonBase-root {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  outline: 0;
+  padding: 4px 10px;
+  margin: 0px 4px 0px 5px;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  border-radius: 0;
+  vertical-align: middle;
+  justify-content: center;
+  text-decoration: none;
+  background-color: #5bc5a7;
+  box-shadow: 0 2px 0 0 rgb(55 59 63 / 50%);
+}
+.toolbar {
+  background: #5bc5a7;
+  border: 0px;
+  padding: 0px 10px;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+}
+.dummy {
+  flex-grow: 1;
+  display: block;
+}
+.toolbar img {
+  height: 24px;
+  padding: 12px 10px;
+}

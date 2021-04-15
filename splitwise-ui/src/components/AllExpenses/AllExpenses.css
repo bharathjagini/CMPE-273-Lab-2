@@ -1,0 +1,124 @@
+.flex-item {
+  margin: 11px 0 0;
+  padding: 3px 8px 5px 5px;
+  font-size: 16px;
+  line-height: 40px;
+  color: #333333;
+  border-bottom: 1px solid #eee;
+}
+.allExpenseHeader {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 40px;
+  width: 538px;
+  position: relative;
+  z-index: 9;
+  background: #eee;
+  border-bottom: none;
+  padding: 13px 10px 10px;
+  border-bottom: 1px solid #ddd;
+  margin-top: auto;
+}
+.expense-grid-container {
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: auto;
+  grid-template-areas: "expenseDesc expense ";
+}
+.amount {
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+}
+.expense {
+  display: grid;
+  grid-template-columns: 150px 150px;
+  grid-template-rows: auto;
+  grid-template-areas: "paid lent ";
+}
+.paid {
+  text-align: right;
+  width: 100px;
+  padding: 11px 10px 12px 5px;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: top;
+  color: #aaa;
+  cursor: pointer;
+}
+.lent {
+  text-align: right;
+  width: 100px;
+  padding: 11px 10px 12px 5px;
+  font-size: 12px;
+  line-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: top;
+  color: #aaa;
+  cursor: pointer;
+}
+.negative {
+  color: #ff652f;
+  font-weight: bold;
+  font-size: 16px;
+}
+.positive {
+  color: #5bc5a7;
+  font-weight: bold;
+  font-size: 16px;
+}
+.expenseSettleButtons button {
+  margin-top: 20px;
+  background-color: #ff652f;
+  color: white;
+  border-radius: 5px;
+  font-size: 18px;
+  width: auto;
+  text-shadow: 0 -1px 0 #c83400;
+  border-color: #ff652f;
+  box-shadow: 0 2px 0 0 rgb(55 59 63 / 50%);
+
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.expenseSettleButtons {
+  float: right;
+}
+.expImg {
+  float: left;
+  width: 35px;
+  height: 35px;
+  margin: 5px 16px 10px 0;
+  border-radius: 4px;
+  /* cursor: pointer; */
+  -webkit-box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+}
+.expDate {
+  float: left;
+  margin-right: 2px;
+  color: #999;
+  text-transform: uppercase;
+  font-size: 10px;
+  height: 35px;
+  width: 35px;
+}
+.expDay {
+  margin-top: 2px;
+}
+
+.allExpenseHeader .monthDivider {
+  padding: 1px 10px;
+  background: #eee;
+  border-top: 1px solid #f6f6f6;
+  border-bottom: 1px solid #ddd;
+  font-size: 11px;
+  width: 538px;
+}
