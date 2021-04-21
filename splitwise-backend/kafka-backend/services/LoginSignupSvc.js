@@ -1,10 +1,12 @@
 const Customer = require('../Models/CustomerModel');
+//const mongoose=require('mongoose')
+
 const Curr=require('../Models/CurrencyModel')
 const autoSeq=require('../controller/AutoSeq.controller');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 var { secret } = require("../database/config");
-const { auth } = require("../../passport/passport");
+const { auth } = require("../passport/passport");
 
 auth();
  const saltRounds = 10;
@@ -27,8 +29,10 @@ return new Promise((resolve,reject)=>{
     currencyId:101,
     timezoneId:1001,
     languageId:1001,
-    createdDate:new Date()
+    createdDate:new Date(),
+    image:''
     })
+    console.log('customer',customer)
   Customer.findOne({ custEmail: createCust.custEmail }, (error, oldCustomer) => {
         if (error) {
     console.log(error);
@@ -83,9 +87,12 @@ checkLogin:async(loginDetails)=>{
           return resolve(errorRes);
         }
       else{
+        console.log('existing cust',existingCust);
+        if(existingCust!==null){
           bcrypt.compare(loginDetails.loginPassword, existingCust.custPasswd)
           .then(response=>{
-            
+            console.log('response:',response);
+            if(response){
                 const payload = { _id: existingCust._id, custEmail: existingCust.custEmail};
          console.log('payload',payload)
             const token = jwt.sign(payload, secret, {
@@ -95,14 +102,32 @@ checkLogin:async(loginDetails)=>{
             existingCust.token="JWT "+token;
             existingCust.code="S01";
             console.log('existing cust',existingCust)
-             return resolve(existingCust);
+            return resolve(existingCust);
+          }
+          else{
+            const errorRes={
+              "code":"E01",
+              "desc":"Password is incorrect"
+          }
+         return reject(errorRes);
+          }
+           //  return resolve(existingCust);
         }).catch(error=>{
                  const errorRes={
                "code":"E01",
-               "desc":"Something went wrong.Please try again"
+               "desc":"Password is incorrect"
            }
-          return resolve(errorRes);
+          return reject(errorRes);
             })
+          }
+          else
+          {
+            const errorRes={
+              "code":"E01",
+              "desc":"User Not found"
+          }
+          return reject(errorRes);
+          }
       }
     })
     })

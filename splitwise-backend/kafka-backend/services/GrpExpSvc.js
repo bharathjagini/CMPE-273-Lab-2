@@ -3,6 +3,8 @@ const autoSeq=require('../controller/AutoSeq.controller');
 const CustGrpExp=require('../Models/CustGrpExpModel');
 const CustGroup = require('../Models/CustomerGroupModel');
 const ExpCmnt = require('../Models/ExpCmntModel');
+const activityLogSvc=require('./ActivityLogSvc');
+const ActivityLog=require('../Models/ActivityLogModel')
 module.exports={
     
 
@@ -13,6 +15,20 @@ createExpense:async (createExpReq)=>{
  const createdExp=   await module.exports.saveGrpExpInDB(createExpReq,expenseId);
  const custGrpExpId=await autoSeq.getSequenceValue('custGrpExp');
  const custGroupExpRes=await module.exports.saveCustGrpExpInDB(createExpReq,expenseId,custGrpExpId);
+ const actLogId=await autoSeq.getSequenceValue('activityLog');
+      const activity=new ActivityLog({
+        _id:actLogId,
+        groupId:createExpReq.groupId,
+        createdBy:createExpReq.custName,
+        createdDate:new Date(),
+        createdByCustId:createExpReq.custId,
+        activityType:'paid',
+        expenseDesc:createExpReq.expenseDesc,
+        amount:createExpReq.amount,
+        expenseId:expenseId
+      }) 
+      const activityLogRes=await activityLogSvc.saveActivity(activity)
+
 
  return createdExp;
 },

@@ -8,7 +8,8 @@ const profConfigDtls = require('./services/MyProfileDtlsSvc');
 const myGroupDtls = require('./services/MyGroupDtlsSvc');
 const grpExp = require('./services/GrpExpSvc');
 const recAct=require('./services/RecentActSvc');
-
+const dashboard=require('./services/DashboardSvc');
+const settleTxn=require('./services/SettledUpSvc');
 (async () => {
     const k = await kafka();
     k.subscribe(topics.API_CALL, ({ fn, params, token }) => {
@@ -32,9 +33,12 @@ const recAct=require('./services/RecentActSvc');
                     k.send(topics.LOGIN_RES, { token, resp, success: true });
                 },
                 (resp) => {
+                    console.log(resp);
                     k.send(topics.LOGIN_RES, { token, resp, success: false });
                 },
-            );
+            ).catch(error=>{
+                console.log('error',error);
+            });
     }, 'Login Response');
     
     k.subscribe(topics.CURRENCY_API, ({ fn, params, token }) => {
@@ -214,4 +218,42 @@ const recAct=require('./services/RecentActSvc');
                 },
             );
     }, 'Delete comment for expense');
+    k.subscribe(topics.UPDATE_PROF_API, ({ fn, params, token }) => {
+        
+        profConfigDtls[fn](...params)
+            .then(
+                (resp) => {
+                    k.send(topics.UPDATE_PROF_RES, { token, resp, success: true });
+                },
+                (resp) => {
+                    k.send(topics.UPDATE_PROF_RES, { token, resp, success: false });
+                },
+            );
+    }, 'Update Customer profile details');
+
+    k.subscribe(topics.DASHBOARD_API, ({ fn, params, token }) => {
+        
+        dashboard[fn](...params)
+            .then(
+                (resp) => {
+                    k.send(topics.DASHBOARD_RES, { token, resp, success: true });
+                },
+                (resp) => {
+                    k.send(topics.DASHBOARD_RES, { token, resp, success: false });
+                },
+            );
+    }, 'Fetch Dashboard Details');
+    k.subscribe(topics.SETTLE_UP_API, ({ fn, params, token }) => {
+        
+        settleTxn[fn](...params)
+            .then(
+                (resp) => {
+                    k.send(topics.SETTLE_UP_RES, { token, resp, success: true });
+                },
+                (resp) => {
+                    k.send(topics.SETTLE_UP_RES, { token, resp, success: false });
+                },
+            );
+    }, 'Settle txn with customer');
+    
 })();

@@ -395,6 +395,64 @@ axios
     console.log(this.state);
  
  
+
+
+//==========================================
+
+if(this.state.comments.length>0)
+{
+ displayComments=  this.state.comments.map((comment)=>{
+   return(
+     <div className="displayComments">
+       <div className="commentHeader">
+         <span style={{fontWeight:'bold'}}>{comment.createdBy}</span> <span>{comment.createdDate}</span>
+         <ClearIcon
+              className="deleteComment"
+              onClick={()=>this.deleteComment(comment)}
+            />
+ </div>
+ {comment.commentDesc}
+     </div>
+   );
+
+  })
+}
+
+
+if(this.state.enableCommentModal)
+{
+const expense=this.state.selectedExpense;
+  commentModal=(  <div className="expCmntModal"> 
+     <div className="expCmntContent">
+       <div className="popupHader">
+         {/* Add Notes and Comments for {expense.expenseDesc} */}
+         
+            {/* <ClearIcon
+              className="closePopup"
+              onClick={this.closeCommentModal}
+            /> */}
+         </div>
+         <div className="comments">
+        <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
+        {displayComments}
+        <div className="newComment">
+         <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
+         rows="2" cols="10" placeholder="Add comment"
+         onChange={this.commentChanged} value={this.state.commentDesc}
+         ></textarea>
+         <br/>
+         <button className="postCmntBtn" onClick={this.postComment}>Post</button>
+         </div>
+      </div>
+      </div>
+      </div>)
+
+
+ }
+
+//==========================================
+
+
     if(this.state.otherCustGrpPayList.length>0)
     {
     eachCustOweDtls= this.state.otherCustGrpPayList.map(cust=>{
@@ -425,6 +483,39 @@ const currencyNumber=currency+numeral(cust.amount).format("0.00");
      const currency=this.state.custDetails.currencyValue; 
      // console.log('asdf');
       groupExpenses=this.state.groupExpenses.map((groupExpense,index)=>{
+
+//==========================
+const expense=this.state.selectedExpense;
+if(expense._id===groupExpense._id)
+  commentModal=(  <div className="expCmntModal"> 
+     <div className="expCmntContent">
+       <div className="popupHader">
+         {/* Add Notes and Comments for {expense.expenseDesc} */}
+         
+            {/* <ClearIcon
+              className="closePopup"
+              onClick={this.closeCommentModal}
+            /> */}
+         </div>
+         <div className="comments">
+        <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
+        {displayComments}
+        <div className="newComment">
+         <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
+         rows="2" cols="10" placeholder="Add comment"
+         onChange={this.commentChanged} value={this.state.commentDesc}
+         ></textarea>
+         <br/>
+         <button className="postCmntBtn" onClick={this.postComment}>Post</button>
+         </div>
+      </div>
+      </div>
+      </div>)
+      else commentModal=null;
+
+//========================
+
+
         const d=moment(groupExpense.created_date)
         const month=moment(d.month()+1,'MM').format('MMMM')
   const createdDate=moment(groupExpense.createdDate).format("YYYY-MM-DD HH:mm:ss")
@@ -465,19 +556,21 @@ const currencyNumber=currency+numeral(cust.amount).format("0.00");
             <button type="button" className="editExpBtn" onClick={()=>this.openCommentModal(groupExpense)}>Edit Expense</button>
             <br/>
             <span>{createdDate}</span>
+            <br/>
+            <span onClick={this.openCommentModal}>
+           {commentModal}
+           </span>
              </div>
-             <div className="expense" >
+             {/* <div className="expense" > */}
             {/* <div className="paid">
               {groupExpense.cust_name} paid
               <br/>
              <span className="amount">{currencyNumber}  </span> 
             
           </div>*/}
-          <span onClick={this.openCommentModal}>
-           {custPaidDtl}
-           </span>
         
-     </div>
+        
+     {/* </div> */}
             </div>
             </div>
            
@@ -543,59 +636,59 @@ if(this.state.enableExpModal){
 }
 
 
-if(this.state.comments.length>0)
-{
- displayComments=  this.state.comments.map((comment)=>{
-   return(
-     <div className="displayComments">
-       <div className="commentHeader">
-         <span style={{fontWeight:'bold'}}>{comment.createdBy}</span> <span>{comment.createdDate}</span>
-         <ClearIcon
-              className="deleteComment"
-              onClick={()=>this.deleteComment(comment)}
-            />
- </div>
- {comment.commentDesc}
-     </div>
-   );
+// if(this.state.comments.length>0)
+// {
+//  displayComments=  this.state.comments.map((comment)=>{
+//    return(
+//      <div className="displayComments">
+//        <div className="commentHeader">
+//          <span style={{fontWeight:'bold'}}>{comment.createdBy}</span> <span>{comment.createdDate}</span>
+//          <ClearIcon
+//               className="deleteComment"
+//               onClick={()=>this.deleteComment(comment)}
+//             />
+//  </div>
+//  {comment.commentDesc}
+//      </div>
+//    );
 
-  })
-}
+//   })
+// }
 
 
-if(this.state.enableCommentModal)
-{
-const expense=this.state.selectedExpense;
-  commentModal=(  <div className="expCmntModal"> <Modal
-        open={this.state.enableCommentModal}
-        onClose={this.closeCommentModal}
-      >
-     <div className="expCmntContent">
-       <div className="popupHeader">
-         Add Notes and Comments for {expense.expenseDesc}
+// if(this.state.enableCommentModal)
+// {
+// const expense=this.state.selectedExpense;
+//   commentModal=(  <div className="expCmntModal"> <Modal
+//         open={this.state.enableCommentModal}
+//         onClose={this.closeCommentModal}
+//       >
+//      <div className="expCmntContent">
+//        <div className="popupHeader">
+//          Add Notes and Comments for {expense.expenseDesc}
          
-            <ClearIcon
-              className="closePopup"
-              onClick={this.closeCommentModal}
-            />
-         </div>
-         <div className="comments">
-        <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
-        {displayComments}
-        <div className="newComment">
-         <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
-         rows="2" cols="10" placeholder="Add comment"
-         onChange={this.commentChanged} value={this.state.commentDesc}
-         ></textarea>
-         <br/>
-         <button className="postCmntBtn" onClick={this.postComment}>Post</button>
-         </div>
-      </div>
-      </div>
-      </Modal></div>)
+//             <ClearIcon
+//               className="closePopup"
+//               onClick={this.closeCommentModal}
+//             />
+//          </div>
+//          <div className="comments">
+//         <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
+//         {displayComments}
+//         <div className="newComment">
+//          <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
+//          rows="2" cols="10" placeholder="Add comment"
+//          onChange={this.commentChanged} value={this.state.commentDesc}
+//          ></textarea>
+//          <br/>
+//          <button className="postCmntBtn" onClick={this.postComment}>Post</button>
+//          </div>
+//       </div>
+//       </div>
+//       </Modal></div>)
 
 
- }
+//  }
     return (
       <div className="totalGroupExpenses">
         <div className="groupExpenses">

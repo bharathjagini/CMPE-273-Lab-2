@@ -68,11 +68,12 @@ console.log(props);
     // }
     const settleUpReq={
        loggedInCustId:this.state.custDetails.custId,
-       settleUpCustId:selectedMemberId
+       settleUpCustId:selectedMemberId,
+       custName:this.state.custDetails.custName
     }
      axios
       .post(
-        config.backEndURL+"/profile/settleUp/" ,settleUpReq)
+        config.backEndURL+"/users/settleup/" ,settleUpReq)
       .then(response => {
         console.log("Status Code : ", response.status);
         if (response.status === 200) {

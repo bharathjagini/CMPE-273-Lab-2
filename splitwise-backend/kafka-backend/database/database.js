@@ -5,7 +5,8 @@ const options = {
     useUnifiedTopology: true,
     poolSize: 500,
     bufferMaxEntries: 0,
-    useFindAndModify:false
+    useFindAndModify:false,
+     autoIndex: false 
   
 };
 mongoose.connect(mongoDB, options, (err, res) => {

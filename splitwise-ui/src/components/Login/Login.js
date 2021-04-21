@@ -23,7 +23,7 @@ class Login extends Component {
       languageId:0,
       phnNumber:"",
       countryCode:"",
-      imageId:0,
+      image:'',
       token:""
     };
   }
@@ -63,13 +63,13 @@ class Login extends Component {
             loginSuccessful: true,
             custId: response.data._id,
             custName: response.data.custName,
-             timezoneId:response.data.timeZoneId,
+             timezoneId:response.data.timezoneId,
            currencyId:response.data.currencyId,
             languageId:response.data.languageId,
           phnNumber:response.data.custPhoneNumber,
            currencyValue:"",
            countryCode:"",
-           imageId:response.data.imageId,
+           image:response.data.image,
            token:response.data.token
           });
 
@@ -82,9 +82,10 @@ class Login extends Component {
       })
       .catch(error => {
         console.log(error.response);
+        alert(error.response.data.desc)
         this.setState({
           loginSuccessful: false,
-          errorMsg: error.response.data.errorDesc
+          errorMsg: error.response.data.desc
         });
       });
   };
@@ -103,7 +104,7 @@ class Login extends Component {
         languageId:this.state.languageId,
         phnNumber:phoneNumber,
         timezoneId:this.state.timezoneId,
-        imageId:this.state.imageId
+        image:this.state.image
       };
       this.props.login({custDetails});
       sessionStorage.setItem("custDetails", JSON.stringify(custDetails));

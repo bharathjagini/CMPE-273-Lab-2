@@ -294,7 +294,7 @@
   line-height: 24px;
   color: #999;
 }
-.expCmntContent {
+/*.expCmntContent {
   width: 400px;
   margin-left: -176px;
   display: block;
@@ -303,7 +303,7 @@
   top: 20%;
   left: 50%;
   height: 400px;
-}
+}*/
 .displayComments {
   border: 1px solid #ccc;
   border-radius: 5px;

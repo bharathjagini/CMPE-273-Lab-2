@@ -1,11 +1,13 @@
-    const Group = require('../Models/GroupModel');
+const Group = require('../Models/GroupModel');
 const autoSeq=require('../controller/AutoSeq.controller');
 const CustGroup=require('../Models/CustomerGroupModel')
+const ActivityLog=require('../Models/ActivityLogModel')
+const activityLogSvc=require('./ActivityLogSvc');
 module.exports = {
 
 createGroup:async (createGrpReq)=>{
 
-console.log(createGrpReq);
+console.log('createGrpReq',createGrpReq)
     const groupId=await autoSeq.getSequenceValue('group');
   
     console.log('Group Id value::',groupId)
@@ -16,9 +18,19 @@ console.log(createGrpReq);
     createdDate:new Date(),
     createdByCustId:createGrpReq.createdCustId
     })
-   const createGroupResponse= await saveGrpDetails(newGroup);
-   if(createGroupResponse.code==='S01'){
-  
+   const createGroupResponse= await module.exports.saveGrpDetails(newGroup);
+   
+   const actLogId=await autoSeq.getSequenceValue('activityLog');
+      const activity=new ActivityLog({
+        _id:actLogId,
+        groupId:groupId,
+        createdBy:createGrpReq.createdCustName,
+        createdDate:new Date(),
+        createdByCustId:createGrpReq.createdCustId,
+        activityType:'created'
+
+      }) 
+      const activityLogRes=await activityLogSvc.saveActivity(activity)
 
      for(const custId of createGrpReq.custIds){
             const custGroupId=await autoSeq.getSequenceValue('custGroup');
@@ -32,12 +44,15 @@ console.log(createGrpReq);
     })
     if(custId===createGrpReq.createdCustId)
     newCustGroup.inviteAccepted=true;
-  const createdCustGroup= await createCustGroup(newCustGroup);
+  const createdCustGroup= await module.exports.createCustGroup(newCustGroup);
 
-}
+  console.log('createdCustGroup',createdCustGroup)
+
 
    }
-return createGroupResponse;
+
+    return createGroupResponse;
+
 
 
 },
@@ -70,7 +85,7 @@ saveGrpDetails:(newGroup)=>{
            return resolve(errorRes);
                 }
                 else {
-                      data.code="S01";
+                    
                    return resolve(data);
                 }
             });

@@ -22,7 +22,7 @@ class Dashboard extends Component {
 
   componentDidMount()
   {
-  //  this.fetchDashboardDtls();
+    this.fetchDashboardDtls();
   }
 
   componentDidUpdate(prevProps)
@@ -39,7 +39,7 @@ class Dashboard extends Component {
   fetchDashboardDtls=()=>{
 axios
       .get(
-        config.backEndURL+"/profile/oweDetails/" +
+        config.backEndURL+"/users/dashboardDtls/" +
           this.state.custDetails.custId
       )
       .then(response => {

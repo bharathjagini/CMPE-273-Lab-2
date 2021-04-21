@@ -7,7 +7,8 @@ const myProf= require("../controller/MyProfile.controller");
 const grpExp= require("../controller/GrpExp.controller");
 const recAct= require("../controller/RecentActivity.controller");
 var router = require("express").Router();
-
+const multer = require('multer');
+var upload = multer();
 
 const { checkAuth } = require("../passport/passport");
 const {kafka} = require('../kafka');
@@ -30,6 +31,9 @@ const k=await kafka();
     fetchComments=await k.fetchComments;
     deleteComment=await k.deleteComment;
     recentActivity=await k.recentActivity;
+    updateProfDtls=await k.updateProfDtls;
+    dashboardDtls=await k.dashboardDtls;
+    settleUp=await k.settleUp;
 })();
 
 
@@ -40,10 +44,18 @@ const response= await callAndWait('createCustomer', req.body);
   });
 
   router.post("/login", async (req,res)=>{
+    try{
 const response= await checkLogin('checkLogin', req.body);
- 
+ console.log('response:',response);
   res.status(200).send(response);
-  });
+ 
+  }
+catch(error){
+  console.log('error:',error);
+  res.status(500).send(error);
+ 
+}
+});
 
   router.get("/currency/:currencyId",checkAuth,async (req,res)=>{
 const response= await currencyDtl('currencyValue', req.params.currencyId);
@@ -57,11 +69,9 @@ const response= await allCustomers('allCustomers', {});
 
   });
 router.post("/createGroup",checkAuth ,async (req,res)=>{
-const response= await createGroup('createGroup', {});
-  if(response.code==='S01')
+const response= await createGroup('createGroup', req.body);
+  
   res.status(201).send(response);
-  else
-  res.status(500).send(response);
   });
 //router.post("/createCustGroup", custGroup.createCustGroup);
 router.get("/custGroup/:custId", checkAuth,async (req,res)=>{
@@ -70,7 +80,7 @@ const response= await getCustGroups('custGroups', req.params.custId);
 
   });
   router.get("/configDtls",checkAuth,async (req,res)=>{
-const response= await getProfConfigDtls('profConfigDetails', {});
+const response= await profConfigDetails('profConfigDetails', {});
   res.status(200).send(response);
 
   });
@@ -124,6 +134,32 @@ const response= await recentActivity('recentActivity', req.body);
   res.status(200).send(response);
 
   });
+
+  router.post("/updateProfDtls/:custId",upload.single('file'), async (req,res)=>{
+    const profileUpdateReq={
+      image:req.file,
+      profDtls:req.body.profDtls
+    }
+    console.log('body:',JSON.stringify(req.body.profDtls))
+    const response= await updateProfDtls('updateProfDtls', profileUpdateReq);
+      res.status(200).send(response);
+    
+      });
+
+      router.get("/dashboardDtls/:custId", async (req,res)=>{
+       
+        const response= await dashboardDtls('grpDashboardAmountDetails', req.params.custId);
+          res.status(200).send(response);
+        
+          });
+
+      router.post("/settleup", async (req,res)=>{
+       
+            const response= await settleUp('settleUp', req.body);
+              res.status(200).send(response);
+            
+              });
+    
 
 
 

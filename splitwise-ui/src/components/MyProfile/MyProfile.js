@@ -26,8 +26,9 @@ constructor(props)
         timezoneDetailsList:this.props.profDtls.timezoneDetailsList,
         detailsUpdated:false,
         imageUri:"",
-        imageData:null,
+        imageData:this.props.custDetails.image,
         selectedFile:[],
+        imageUploaded:false,
         updatedCustdetails:{
             custId:this.props.custDetails.custId,
             custName:this.props.custDetails.custName,
@@ -37,7 +38,9 @@ constructor(props)
             newPasswd:"",
             currencyId:this.props.custDetails.currencyId,
             timezoneId:this.props.custDetails.timezoneId,
-            languageId:this.props.custDetails.languageId
+            languageId:this.props.custDetails.languageId,
+            image:this.props.custDetails.image,
+            imageUploaded:false
 }
 
         }      
@@ -131,7 +134,7 @@ let updatedCustDetails=this.state.updatedCustdetails;
 }
 
 componentDidMount(){
-  this.getImage();
+ // this.getImage();
      const custId=this.state.custDetails.custId;
     //const groupId=this.state.groupDetails.group_id;
     console.log('curr dtls from store',this.state.currencyDtlsList)
@@ -171,6 +174,7 @@ uploadImageinDB=()=>{
   const custId=this.state.custDetails.custId; 
     const formData = new FormData();
     
+    console.log(this.state.updatedCustdetails);
       // Update the formData object
     console.log(this.state.selectedFile)
       formData.append(
@@ -178,6 +182,7 @@ uploadImageinDB=()=>{
         this.state.selectedFile
      
       ); 
+      formData.append("profDtls",JSON.stringify(this.state.updatedCustdetails));
       const config1 = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -185,20 +190,27 @@ uploadImageinDB=()=>{
         };
   axios
       .post(
-        config.backEndURL+"/profile/uploadImage/"+custId,formData,config1
+        config.backEndURL+"/users/updateProfDtls/"+custId,formData,config1
       )
 
       .then(response => {
         console.log("Status Code : ", response.status);
         if (response.status === 200) {
-          console.log(response.data.imageId);
+       
           const updatedCustdetails=this.state.custDetails;
-          updatedCustdetails.imageId=response.data.imageId;
+         console.log(response.data)
  
+         if(this.state.imageUploaded){
+          updatedCustdetails.image=response.data.image;
+          this.setState({
+            imageData:response.data.image,
+            updatedCustdetails:updatedCustdetails
+          })
+        }
         //  this.props.custDetailsUpdated({
         //   updatedCustdetails:updatedCustdetails
         // });
-        return resolve(response.data.imageId);
+        return resolve(updatedCustdetails);
           //console.log(this.state);
         }
         else{
@@ -257,19 +269,19 @@ getImage=()=>{
 
 updateCustdetails=async ()=>{
  
- const imageId=await this.uploadImageinDB();
+ const updatedCustDetails=await this.uploadImageinDB();
   // const imageData=this.state.imageUri;
   // const custDetails=this.state.updateCustdetails;
   // custDetails.imageData=imageData;
   // this.setState({
   //   updateCustdetails:custDetails
   // })
- const updatedCustDetails=await this.saveCustDetailsinDB();
- if(imageId!==null)
- {
-   console.log('imgId')
-    updatedCustDetails.imageId=imageId;
- }
+//  const updatedCustDetails=await this.saveCustDetailsinDB();
+//  if(imageId!==null)
+//  {
+//    console.log('imgId')
+//     updatedCustDetails.imageId=imageId;
+//  }
  console.log('after db update',updatedCustDetails)
   this.props.custDetailsUpdated({
           updatedCustdetails:updatedCustDetails
@@ -344,6 +356,7 @@ uploadedImage=(event)=>{
 
        this.setState({
         imageData:event.target.result,
+        imageUploaded:true
       })
      };
      reader.readAsDataURL(file);
@@ -412,6 +425,7 @@ return(
    <div className="profileGridContainer">
         <div className="imageSection">
             <h1>Your account</h1>
+           
              <img width="200" height="200" src={this.state.imageData} alt="Profile"/>
             <input type="file"  title="Profile" onChange={event => this.uploadedImage(event)} />
         </div>

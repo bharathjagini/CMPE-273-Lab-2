@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const app = express();
-const port = 3005;
+const port = 3002;
 const multer = require('multer');
 const cors=require('cors');
 const mongodb=require("./database/database")

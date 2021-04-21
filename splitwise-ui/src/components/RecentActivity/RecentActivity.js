@@ -31,7 +31,8 @@ componentDidMount() {
     console.log('groupIDs',groupIds)
     const recentActReq={
       
-      groupIds:groupIds
+      groupIds:groupIds,
+      custId:this.state.custDetails.custId
     }
     axios
       .post(
@@ -76,14 +77,146 @@ componentDidMount() {
       });
   }
   componentDidUpdate(prevState){
+    // if(prevState.selectedGroupId!==this.state.selectedGroupId)
+    // {
+    //   console.log(this.state.selectedGroupId)
+    //   const groupId=Number(this.state.selectedGroupId);
+    //   const recentActivityList=this.state.recentActivity.filter(activity=>activity.groupId._id===groupId);
+    //   console.log(recentActivityList.length,this.state.paginationDefault);
+    //   console.log(Math.ceil(recentActivityList.length/this.state.paginationDefault));
+    //   let pageNumbers=[];
+    //   for(let i=1;i<=Math.ceil(recentActivityList.length/this.state.paginationDefault);i++)
+    //   pageNumbers.push(i);
+
+    //   this.setState({
+    //     activityPaginated:recentActivityList,
+    //     pageNumbers:pageNumbers
+    //   })
+
+    // }
     console.log('updated');
+    console.log(this.state.recentActivity);
     
   }
  groupNameChanged=(e)=>{
-    this.setState({
-    selectedGroupId:e.target.value
-    })
+  const groupId=Number(e.target.value);
+  let activityPaginated=[];
+  let pageNumbers=[];
+  console.log(typeof groupId)
+  if(groupId>0){
+   
+   const recentActivityList=this.state.recentActivity.filter(activity=>activity.groupId._id===groupId);
+   console.log(recentActivityList.length,this.state.paginationDefault);
+   console.log(Math.ceil(recentActivityList.length/this.state.paginationDefault));
+ 
+   for(let i=1;i<=Math.ceil(recentActivityList.length/this.state.paginationDefault);i++)
+   pageNumbers.push(i);
+
+   if(recentActivityList.length>this.state.paginationDefault){
+    activityPaginated=recentActivityList.slice(0,1*this.state.paginationDefault);
+    console.log('activity paginated:',activityPaginated);
+   this.setState({
+      activityPaginated:activityPaginated ,
+      pageNumbers:pageNumbers  ,
+      selectedGroupId:groupId,
+      pageNumber:1
+   });
+ }
+ else{
+   this.setState({
+     activityPaginated:recentActivityList,
+       pageNumbers:pageNumbers  ,
+       selectedGroupId:groupId,
+   }); 
+ }
+
+  }
+  else{
+    const recentAct=this.state.recentActivity;
+    for(let i=1;i<=Math.ceil(recentAct.length/this.state.paginationDefault);i++)
+   pageNumbers.push(i);
+
+    if(recentAct.length>this.state.paginationDefault){
+      activityPaginated=recentAct.slice(0,1*this.state.paginationDefault);
+      console.log('activity paginated:',activityPaginated);
+     this.setState({
+        activityPaginated:activityPaginated ,
+        pageNumbers:pageNumbers  ,
+        selectedGroupId:groupId,
+        pageNumber:1
+     });
+   }
+   else{
+     this.setState({
+       activityPaginated:recentAct,
+         pageNumbers:pageNumbers  ,
+         selectedGroupId:groupId,
+     }); 
+   }
+    
+  }
+
 }
+sortPagination=(groupId)=>{
+  
+  let activityPaginated=[];
+  let pageNumbers=[];
+  console.log(typeof groupId)
+  if(groupId>0){
+   
+   const recentActivityList=this.state.recentActivity.filter(activity=>activity.groupId._id===groupId);
+   console.log(recentActivityList.length,this.state.paginationDefault);
+   console.log(Math.ceil(recentActivityList.length/this.state.paginationDefault));
+ 
+   for(let i=1;i<=Math.ceil(recentActivityList.length/this.state.paginationDefault);i++)
+   pageNumbers.push(i);
+
+   if(recentActivityList.length>this.state.paginationDefault){
+    activityPaginated=recentActivityList.slice(0,1*this.state.paginationDefault);
+    console.log('activity paginated:',activityPaginated);
+   this.setState({
+      activityPaginated:activityPaginated ,
+      pageNumbers:pageNumbers  ,
+      selectedGroupId:groupId,
+      pageNumber:1
+   });
+ }
+ else{
+   this.setState({
+     activityPaginated:recentActivityList,
+       pageNumbers:pageNumbers  ,
+       selectedGroupId:groupId,
+   }); 
+ }
+
+  }
+  else{
+    const recentAct=this.state.recentActivity;
+    for(let i=1;i<=Math.ceil(recentAct.length/this.state.paginationDefault);i++)
+   pageNumbers.push(i);
+
+    if(recentAct.length>this.state.paginationDefault){
+      activityPaginated=recentAct.slice(0,1*this.state.paginationDefault);
+      console.log('activity paginated:',activityPaginated);
+     this.setState({
+        activityPaginated:activityPaginated ,
+        pageNumbers:pageNumbers  ,
+        selectedGroupId:groupId,
+        pageNumber:1
+     });
+   }
+   else{
+     this.setState({
+       activityPaginated:recentAct,
+         pageNumbers:pageNumbers  ,
+         selectedGroupId:groupId,
+     }); 
+   }
+    
+  }
+
+}
+
 updateActivityState=(recentActivityList)=>{
    this.setState({
        recentActivity:recentActivityList
@@ -96,49 +229,83 @@ sortOrderChanged=(e)=>{
   
   if(sortOrder===1){
     console.log('inside')
-  let recentActivityList=this.state.recentActivity;
-          recentActivityList=recentActivityList.sort((activity1,activity2)=>{
-        return new Date(activity2.createdDate).getTime()-new Date(activity1.createdDate).getTime()}).reverse();
-    this.setState({
-       sortOrder:Number(e.target.value),
-      recentActivity:recentActivityList
-    })
-    console.log(this.state.recentActivity);
+    let recentActivityList=this.state.recentActivity;
+    recentActivityList=recentActivityList.sort((activity1,activity2)=>{
+  return new Date(activity1.createdDate).getTime()-new Date(activity2.createdDate).getTime()}).reverse();
+this.setState({
+ sortOrder:Number(e.target.value),
+recentActivity:recentActivityList
+})
+
+    
   }
    else
    {
-  let recentActivityList=this.state.recentActivity;
-          recentActivityList=recentActivityList.sort((activity1,activity2)=>{
-        return new Date(activity1.createdDate).getTime()-new Date(activity2.createdDate).getTime()}).reverse();
-    this.setState({
-       sortOrder:Number(e.target.value),
-      recentActivity:recentActivityList
-    })
+    let recentActivityList=this.state.recentActivity;
+    recentActivityList=recentActivityList.sort((activity1,activity2)=>{
+  return new Date(activity2.createdDate).getTime()-new Date(activity1.createdDate).getTime()}).reverse();
+this.setState({
+ sortOrder:Number(e.target.value),
+recentActivity:recentActivityList
+})
      
    }
+   console.log(this.state.recentActivity);
+   this.sortPagination(this.state.selectedGroupId);
   }
   changePaginationValue=(e)=>{
     let pageNumbers=[];
-       for(let i=1;i<=Math.ceil(this.state.recentActivity.length/Number(e.target.value));i++)
-           pageNumbers.push(i)
-    const recentActivity=this.state.recentActivity;
+    const newPaginationValue=Number(e.target.value);
     let activityPaginated=this.state.activityPaginated;
-    if(recentActivity.length>=Number(e.target.value)){
-activityPaginated=recentActivity.slice(0,this.state.pageNumber*Number(e.target.value))
+    let grpRecentActivity=[];
+   
+    if(this.state.selectedGroupId>0)
+    {
+      
+      grpRecentActivity= this.state.recentActivity.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
+
+      if(grpRecentActivity!==undefined)
+      for(let i=1;i<=Math.ceil(grpRecentActivity.length/newPaginationValue);i++)
+      pageNumbers.push(i)
+      if(grpRecentActivity.length>newPaginationValue)
+      activityPaginated=grpRecentActivity.slice(0,1*newPaginationValue);
     }
-    else
-    activityPaginated=recentActivity;
+    
+   else{
+    if(this.state.recentActivity.length>newPaginationValue){
+      for(let i=1;i<=Math.ceil(this.state.recentActivity.length/newPaginationValue);i++)
+      pageNumbers.push(i)
+      activityPaginated=this.state.recentActivity.slice(0,1*newPaginationValue);
+    }
+      else{
+        for(let i=1;i<=Math.ceil(this.state.recentActivity.length/newPaginationValue);i++)
+        pageNumbers.push(i)
+    activityPaginated=this.state.recentActivity;
+      }
+   }
+    
+    
     this.setState({
-      paginationDefault:Number(e.target.value),
+      paginationDefault:newPaginationValue,
       activityPaginated:activityPaginated,
-      pageNumbers:pageNumbers
+      pageNumbers:pageNumbers,
+      pageNumber:1
     })
   }
   paginate=(currentPage)=>{
+    let activityPaginated;
+    let grpRecentActivity;
     const indexOfLastExp=currentPage*this.state.paginationDefault;
     const indexOfFirstExp=indexOfLastExp-this.state.paginationDefault;
     const recentActiviy=this.state.recentActivity;
-    const activityPaginated=recentActiviy.slice(indexOfFirstExp,indexOfLastExp);
+if(this.state.selectedGroupId>0)
+{
+  grpRecentActivity= recentActiviy.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
+  activityPaginated=grpRecentActivity.slice(indexOfFirstExp,indexOfLastExp);
+}
+else{
+     activityPaginated=recentActiviy.slice(indexOfFirstExp,indexOfLastExp);
+}
     this.setState({
       activityPaginated:activityPaginated
     })
@@ -156,15 +323,26 @@ activityPaginated=recentActivity.slice(0,this.state.pageNumber*Number(e.target.v
        return(<option value={group.groupId._id}>{group.groupId.groupName}</option>);
       })
     }
-    if(this.state.selectedGroupId>0&&recentActivityList.length>0)
-    {
-       const groupId=Number(this.state.selectedGroupId);
-     console.log(typeof groupId)
-       console.log(this.state.selectedGroupId,recentActivityList)
-      recentActivityList=recentActivityList.filter(activity=>activity.groupId._id===groupId);
-    console.log(recentActivityList)
-    }
-    // if(this.state.sortOrder===2)
+    // if(this.state.selectedGroupId>0&&this.state.recentActivity.length>0)
+    // {
+    //    const groupId=Number(this.state.selectedGroupId);
+    //  console.log(typeof groupId)
+    //    console.log(this.state.selectedGroupId,recentActivityList)
+    //    recentActivityList=this.state.recentActivity.filter(activity=>activity.groupId._id===groupId);
+    //   console.log(recentActivityList.length,this.state.paginationDefault);
+    //   console.log(Math.ceil(recentActivityList.length/this.state.paginationDefault));
+    //   let pageNumbers=[];
+    //   for(let i=1;i<=Math.ceil(recentActivityList.length/this.state.paginationDefault);i++)
+    //   pageNumbers.push(i);
+
+    //   console.log('page numbers:',pageNumbers);
+    //   // this.setState({
+    //   //   pageNumbers:pageNumbers
+    //   // })
+
+    // console.log(recentActivityList)
+    // }
+    // // if(this.state.sortOrder===2)
     // {
     //   recentActivityList=recentActivityList.sort((activity1,activity2)=>{
     //     return new Date(activity1.created_date).getTime()-new Date(activity2.created_date).getTime()}).reverse();
@@ -229,10 +407,11 @@ activityPaginated=recentActivity.slice(0,this.state.pageNumber*Number(e.target.v
             </div>
             </div>
             {recentActivity}
-
+            <br/>
              <div className="pagination">
               <div className="filterByGrpName">
-                 <span>Set Maximum values</span><br/>
+               
+                 <span> Set Maximum values</span><br/>
             <select name="groupName" value={this.state.paginationDefault} onChange={this.changePaginationValue}>
            
             <option value="0">Select Maximum activities to display</option>

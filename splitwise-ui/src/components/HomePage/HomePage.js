@@ -66,8 +66,9 @@ class HomePage extends Component {
   }
 
   getGroupsForCust=()=>{
+    axios.defaults.withCredentials = true;
       axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
-      console.log('in groups');
+      console.log('in groups',sessionStorage.getItem('token'));
 axios
       .get(
         config.backEndURL+"/users/custGroup/" +
@@ -167,7 +168,7 @@ changedCustDetails=(newDetails)=>{
   custDetails.timezoneId=newDetails.updatedCustdetails.timezoneId
   custDetails.phnNumber=newDetails.updatedCustdetails.custPhnNmbr;
   custDetails.languageId=newDetails.updatedCustdetails.languageId;
-  custDetails.imageId=newDetails.updatedCustdetails.imageId;
+  custDetails.image=newDetails.updatedCustdetails.image;
   this.setState({
 custDetails:custDetails
   })

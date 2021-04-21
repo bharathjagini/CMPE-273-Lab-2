@@ -3,6 +3,7 @@ module.exports={
   
 groupInvites:async (customerId)=>{
 
+    return new Promise((resolve,reject)=>{
     const custId=Number(customerId);
     CustGroup.find({"custId":custId,"inviteAccepted":false}).populate('groupId','groupName').exec((err,grpInvites)=>{
         if(err){
@@ -13,10 +14,13 @@ groupInvites:async (customerId)=>{
            return errorRes;
         }
         
-        else
-        return grpInvites;
+        else{
+            console.log('grpinvites',grpInvites)
+        return resolve(grpInvites);
+        }
 
     })
+})
 },
 
 acceptInvite:async(accInvReq)=>{

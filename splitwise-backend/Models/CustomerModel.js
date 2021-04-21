@@ -15,11 +15,13 @@ var customerSchema = new Schema({
     currencyId: {type: Number,  ref: 'currencies',required: false},
     timezoneId: {type: Number,  ref: 'timezones',required: false},
     languageId:{type: Number,  ref: 'languages',required: false},
+    imagePath:{type:String,required:true},
     token:{type: String, required: false}
 
 },
 {
-    versionKey: false
+    versionKey: false,
+    collection: 'customers' 
   
 });
 

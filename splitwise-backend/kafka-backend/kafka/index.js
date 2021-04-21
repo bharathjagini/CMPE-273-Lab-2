@@ -36,10 +36,6 @@ const allTopics = {
     DELETE_CMNT_RES:'delete-comment-res',
     REC_ACT_API:'recent-activity',
     REC_ACT_RES:'recent-activity-res',
-    UPDATE_PROF_API:'update-profile',
-    UPDATE_PROF_RES:'update-profile-res',
-    DASHBOARD_API:'dashboard',
-    DASHBOARD_RES:'dashboard-res',
     SETTLE_UP_API:'settle-up',
     SETTLE_UP_RES:'settle-up-res'
 };
@@ -203,18 +199,6 @@ async function kafka() {
             delete awaitCallbacks[token];
         }
     });
-    subscribe(allTopics.UPDATE_PROF_RES, ({token, resp, success}) => {
-        if (awaitCallbacks.hasOwnProperty(token)) {
-            awaitCallbacks[token][success ? 0 : 1](resp);
-            delete awaitCallbacks[token];
-        }
-    });
-    subscribe(allTopics.DASHBOARD_RES, ({token, resp, success}) => {
-            if (awaitCallbacks.hasOwnProperty(token)) {
-                awaitCallbacks[token][success ? 0 : 1](resp);
-                delete awaitCallbacks[token];
-            }
-    });
     subscribe(allTopics.SETTLE_UP_RES, ({token, resp, success}) => {
         if (awaitCallbacks.hasOwnProperty(token)) {
             awaitCallbacks[token][success ? 0 : 1](resp);
@@ -323,18 +307,6 @@ async function kafka() {
             console.log('token::,fn,params',token,fn,params)
             awaitCallbacks[token] = [resolve, reject];
             send(allTopics.REC_ACT_API, {fn, params, token});
-        }),
-        updateProfDtls: (fn, ...params) => new Promise((resolve, reject) => {
-            const token = crypto.randomBytes(64).toString('hex');
-            console.log('token::,fn,params',token,fn,params)
-            awaitCallbacks[token] = [resolve, reject];
-            send(allTopics.UPDATE_PROF_API, {fn, params, token});
-        }),
-        dashboardDtls: (fn, ...params) => new Promise((resolve, reject) => {
-            const token = crypto.randomBytes(64).toString('hex');
-            console.log('token::,fn,params',token,fn,params)
-            awaitCallbacks[token] = [resolve, reject];
-            send(allTopics.DASHBOARD_API, {fn, params, token});
         }),
         settleUp: (fn, ...params) => new Promise((resolve, reject) => {
             const token = crypto.randomBytes(64).toString('hex');

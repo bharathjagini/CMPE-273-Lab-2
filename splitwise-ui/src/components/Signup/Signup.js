@@ -15,6 +15,7 @@ class Signup extends Component {
       custEmail: "",
       custPasswd: "",
       custId: "",
+      imagePath:"",
       signUpDone: false,
       token:""
     };
@@ -63,7 +64,7 @@ class Signup extends Component {
           phnNumber:response.data.custPhoneNumber,
            currencyValue:"",
            countryCode:"",
-           imageId:0,
+           image:"",
            token:response.data.token
           }
           this.props.signup({custDetails});

@@ -7,7 +7,7 @@ var custGrpExpSchema = new Schema({
     createdBy: {type: String, required: true},
     createdDate: {type: Date, required: true},
     createdByCustId:{type:Number, ref: 'customers',required:true},
-    groupId:{type:Number,required:true},
+    groupId:{type:Number,ref:'groups',required:true},
     paidByCustId:{type:Number,  ref: 'customers',required:true},
     oweByCustId:{type:Number, ref: 'customers',required:true},
     expenseId:{type:Number,ref: 'groupExpenses',required:true},
