@@ -22,6 +22,7 @@ class MyGroup extends Component {
     };
   }
   componentDidMount() {
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .get(
         config.backEndURL+"/users/groupInvites/" +
@@ -63,6 +64,7 @@ this.props.changedGrpList({
         custId:custId,
         groupId:groupId
       }
+      axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
  axios
       .put(config.backEndURL+"/users/exitGroup",exitGroupReq)
 
@@ -99,6 +101,7 @@ return resolve(groupList);
       custId: this.state.custDetails.custId,
       groupId: groupId
     };
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .put(config.backEndURL+"/users/acceptInvite", acceptInviteReq)
 

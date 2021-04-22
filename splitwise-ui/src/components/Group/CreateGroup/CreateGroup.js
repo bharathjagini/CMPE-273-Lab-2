@@ -28,6 +28,7 @@ class CreateGroup extends Component {
   componentDidMount()
   {
     console.log('before all cust')
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
       axios
       .get(config.backEndURL+"/users/allCustomers")
       .then(response => {
@@ -200,7 +201,7 @@ class CreateGroup extends Component {
       createdCustName: loggedInCustName,
       custIds:custIds,
     };
-    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .post(config.backEndURL+"/users/createGroup", createGroupDetails)
       .then(response => {

@@ -71,6 +71,7 @@ console.log(props);
        settleUpCustId:selectedMemberId,
        custName:this.state.custDetails.custName
     }
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
      axios
       .post(
         config.backEndURL+"/users/settleup/" ,settleUpReq)

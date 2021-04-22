@@ -78,6 +78,7 @@ class GroupExpenses extends Component {
     const groupId=this.state.groupId;
     
     console.log('inside api',custId,groupId)
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .get(
         config.backEndURL+"/users/grpExpDtls?groupId=" +
@@ -203,7 +204,7 @@ createExpenseDbCall=()=>{
 
   }
   
-
+  axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .post(
         config.backEndURL+"/users/createExpense",newExpenseReq
@@ -247,7 +248,7 @@ openCommentModal=(expense)=>{
     selectedExpense:expense
   })
 
-  
+  axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
  axios
       .get(
         config.backEndURL+"/users/comments/"+expense._id
@@ -293,7 +294,7 @@ const createCommentReq={
   createdByCustId:this.state.custDetails.custId,
   commentDesc:commentDesc
 }
-
+axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
  axios
       .post(
         config.backEndURL+"/users/createComment",createCommentReq
@@ -347,6 +348,7 @@ const deleteCommentReq={
   modifiedByCustId:this.state.custDetails.custId
 }
 console.log(deleteCommentReq);
+axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
 axios
       .delete(
         config.backEndURL+"/users/deleteComment",{data:deleteCommentReq}
@@ -420,36 +422,36 @@ if(this.state.comments.length>0)
 }
 
 
-// if(this.state.enableCommentModal)
-// {
-// const expense=this.state.selectedExpense;
-//   commentModal=(  <div className="expCmntModal"> 
-//      <div className="expCmntContent">
-//        <div className="popupHader">
-//          {/* Add Notes and Comments for {expense.expenseDesc} */}
+if(this.state.enableCommentModal)
+{
+const expense=this.state.selectedExpense;
+  commentModal=(  <div className="expCmntModal"> 
+     <div className="expCmntContent">
+       <div className="popupHader">
+         {/* Add Notes and Comments for {expense.expenseDesc} */}
          
-//             {/* <ClearIcon
-//               className="closePopup"
-//               onClick={this.closeCommentModal}
-//             /> */}
-//          </div>
-//          <div className="comments">
-//         <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
-//         {displayComments}
-//         <div className="newComment">
-//          <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
-//          rows="2" cols="10" placeholder="Add comment"
-//          onChange={this.commentChanged} value={this.state.commentDesc}
-//          ></textarea>
-//          <br/>
-//          <button className="postCmntBtn" onClick={this.postComment}>Post</button>
-//          </div>
-//       </div>
-//       </div>
-//       </div>)
+            {/* <ClearIcon
+              className="closePopup"
+              onClick={this.closeCommentModal}
+            /> */}
+         </div>
+         <div className="comments">
+        <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
+        {displayComments}
+        <div className="newComment">
+         <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
+         rows="2" cols="10" placeholder="Add comment"
+         onChange={this.commentChanged} value={this.state.commentDesc}
+         ></textarea>
+         <br/>
+         <button className="postCmntBtn" onClick={this.postComment}>Post</button>
+         </div>
+      </div>
+      </div>
+      </div>)
 
 
-//  }
+ }
 
 //==========================================
 
@@ -558,7 +560,7 @@ if(expense._id===groupExpense._id)
             <br/>
             <span>{createdDate}</span>
             <br/>
-            <span onClick={this.openCommentModal}>
+            <span >
            {commentModal}
            </span>
              </div>

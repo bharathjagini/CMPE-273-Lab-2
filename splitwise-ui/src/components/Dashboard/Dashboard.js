@@ -37,6 +37,7 @@ class Dashboard extends Component {
   }
   
   fetchDashboardDtls=()=>{
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
 axios
       .get(
         config.backEndURL+"/users/dashboardDtls/" +

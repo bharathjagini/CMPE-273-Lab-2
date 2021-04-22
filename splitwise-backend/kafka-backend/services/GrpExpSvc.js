@@ -13,8 +13,8 @@ createExpense:async (createExpReq)=>{
  
       const expenseId=await autoSeq.getSequenceValue('grpExp');
  const createdExp=   await module.exports.saveGrpExpInDB(createExpReq,expenseId);
- const custGrpExpId=await autoSeq.getSequenceValue('custGrpExp');
- const custGroupExpRes=await module.exports.saveCustGrpExpInDB(createExpReq,expenseId,custGrpExpId);
+ 
+ const custGroupExpRes=await module.exports.saveCustGrpExpInDB(createExpReq,expenseId);
  const actLogId=await autoSeq.getSequenceValue('activityLog');
       const activity=new ActivityLog({
         _id:actLogId,
@@ -57,14 +57,15 @@ return new Promise((resolve,reject)=>{
     })
 },
 
-saveCustGrpExpInDB:async(createExpReq,expenseId,custGrpExpId)=>{
+saveCustGrpExpInDB:async (createExpReq,expenseId)=>{
     let custGrpExpList=[];
     const custIds=createExpReq.custIds;
-return new Promise((resolve,reject)=>{
+
     let amount = Number(createExpReq.amount);
     amount = (amount / (custIds.length + 1)).toFixed(2);
     console.log('amount',amount)
     for(const custId of custIds){
+      const custGrpExpId=await autoSeq.getSequenceValue('custGrpExp');
     const custGrpExp=new CustGrpExp({
         _id:custGrpExpId,
         expenseId:expenseId,   
@@ -80,13 +81,15 @@ return new Promise((resolve,reject)=>{
     custGrpExpList.push(custGrpExp);
 }
 console.log('custGrpExp',custGrpExpList);
+return new Promise((resolve,reject)=>{
     CustGrpExp.insertMany(custGrpExpList,(error,createdGrpExp)=>{
      if(error) {
+       console.log(error);
      const errorRes={
                "code":"E01",
                "desc":"Unable to create each customer expense"
            }
-          return resolve(errorRes);   
+          return reject(errorRes);   
     }
      else
      return resolve(createdGrpExp);
@@ -226,7 +229,7 @@ expComment.save((err,commentRes)=>{
 })
 },
 
-fetchComments:async (expId)=>{
+fetchComments: (expId)=>{
       const expenseId=Number(expId);
         return new Promise((resolve,reject)=>{
 ExpCmnt.find({"expenseId":expenseId,"deletedComment":false},(err,commentRes)=>{
