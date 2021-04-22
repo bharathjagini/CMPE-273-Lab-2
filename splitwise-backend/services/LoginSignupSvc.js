@@ -46,7 +46,7 @@ return new Promise((resolve,reject)=>{
                "code":"E01",
                "desc":"Email already exists"
            }
-          return reject(errorRes);
+          return resolve(errorRes);
         }
         else {
         //    console.log('non exist cust',customer)

@@ -11,7 +11,6 @@ console.log('createGrpReq',createGrpReq)
     const groupId=await autoSeq.getSequenceValue('group');
   
     console.log('Group Id value::',groupId)
-    try{
     const newGroup=new Group({
     _id:groupId,
     groupName:createGrpReq.groupName,
@@ -52,14 +51,8 @@ console.log('createGrpReq',createGrpReq)
 
    }
 
-   
     return createGroupResponse;
-    }
-    catch(error){
-return new Promise((resolve,reject)=>{
-    return reject(error);
-})
-    }
+
 
 
 },
@@ -72,14 +65,14 @@ saveGrpDetails:(newGroup)=>{
                "code":"E01",
                "desc":"Unable to check whether group exists"
            }
-           return reject(errorRes);
+           return resolve(errorRes);
         }
         if (oldGroup) {
               const errorRes={
                "code":"E01",
                "desc":"Group already exists"
            }
-           return reject(errorRes);
+           return resolve(errorRes);
         }
         else {
             console.log('new group')
@@ -89,7 +82,7 @@ saveGrpDetails:(newGroup)=>{
                "code":"E01",
                "desc":"Unable to create new group"
            }
-           return reject(errorRes);
+           return resolve(errorRes);
                 }
                 else {
                     

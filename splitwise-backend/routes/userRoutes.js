@@ -1,20 +1,31 @@
 require('dotenv').config();
-const customer = require("../controller/CustDtls1.controller");
-const group = require("../controller/GroupDtls.controller");
-const custGroup = require("../controller/CustGrpDtls.controller");
-const myGroup= require("../controller/MyGroup.controller");
-const myProf= require("../controller/MyProfile.controller");
-const grpExp= require("../controller/GrpExp.controller");
-const recAct= require("../controller/RecentActivity.controller");
+// const customer = require("../controller/CustDtls1.controller");
+// const group = require("../controller/GroupDtls.controller");
+// const custGroup = require("../controller/CustGrpDtls.controller");
+// const myGroup= require("../controller/MyGroup.controller");
+// const myProf= require("../controller/MyProfile.controller");
+// const grpExp= require("../controller/GrpExp.controller");
+// const recAct= require("../controller/RecentActivity.controller");
 var router = require("express").Router();
 const multer = require('multer');
 var upload = multer();
+const loginSignup = require('../services/LoginSignupSvc');
+const groupDtls = require('../services/GroupDtlsSvc');
+const custGroupDtls = require('../services/CustGrpDtlsSvc');
+const profConfigDtls = require('../services/MyProfileDtlsSvc');
+const myGroupDtls = require('../services/MyGroupDtlsSvc');
+const grpExp = require('../services/GrpExpSvc');
+const recAct=require('../services/RecentActSvc');
+const dashboard=require('../services/DashboardSvc');
+const settleTxn=require('../services/SettledUpSvc');
 
 const { checkAuth } = require("../passport/passport");
 const {kafka} = require('../kafka');
 
 (async()=>{
-const k=await kafka();
+  console.log('process.env.MOCK_KAFKA',process.env.MOCK_KAFKA)
+  if (process.env.MOCK_KAFKA === 'FALSE') {
+    const k=await kafka();
     callAndWait=await k.callAndWait;
     checkLogin=await k.checkLogin;
     currencyDtl=await k.currencyDtl;
@@ -34,13 +45,48 @@ const k=await kafka();
     updateProfDtls=await k.updateProfDtls;
     dashboardDtls=await k.dashboardDtls;
     settleUp=await k.settleUp;
+} else {
+  
+    callAndWait = async (fn, ...params) => loginSignup[fn](...params);
+    checkLogin = async (fn, ...params) => loginSignup[fn](...params);
+    currencyDtl = async (fn, ...params) => loginSignup[fn](...params);
+    allCustomers = async (fn, ...params) => loginSignup[fn](...params);
+    createGroup = async (fn, ...params) => groupDtls[fn](...params);
+    getCustGroups = async (fn, ...params) => custGroupDtls[fn](...params);
+    profConfigDetails = async (fn, ...params) => profConfigDtls[fn](...params);
+    fetchGroupInvitesForCust = async (fn, ...params) => myGroupDtls[fn](...params);
+    acceptGrpInvite = async (fn, ...params) => myGroupDtls[fn](...params);
+    exitGroup = async (fn, ...params) => myGroupDtls[fn](...params);
+    createExpense = async (fn, ...params) => grpExp[fn](...params); 
+    grpExpDtls = async (fn, ...params) => grpExp[fn](...params);
+    createComment = async (fn, ...params) => grpExp[fn](...params);
+    fetchComments = async (fn, ...params) => grpExp[fn](...params);
+    deleteComment = async (fn, ...params) => grpExp[fn](...params);
+    recentActivity = async (fn, ...params) => recAct[fn](...params);
+    updateProfDtls = async (fn, ...params) => profConfigDtls[fn](...params);
+    dashboardDtls = async (fn, ...params) => {
+      console.log('dashboard',fn)
+      dashboard[fn](...params);}
+    settleUp = async (fn, ...params) => settleTxn[fn](...params);
+
+    console.log('Connected to dev kafka');
+}
+
+
 })();
 
 
 router.post("/signup", async (req,res)=>{
+  try{
 const response= await callAndWait('createCustomer', req.body);
   
   res.status(201).send(response);
+  }
+  catch(error){
+    console.log('error:',error);
+    res.status(500).send(error);
+   
+  }
   });
 
   router.post("/login", async (req,res)=>{
@@ -69,11 +115,16 @@ const response= await allCustomers('allCustomers', {});
 
   });
 router.post("/createGroup",checkAuth ,async (req,res)=>{
+  try{
 const response= await createGroup('createGroup', req.body);
   
   res.status(201).send(response);
+  }
+  catch(error){
+    res.status(500).send(error);
+  }
   });
-//router.post("/createCustGroup", custGroup.createCustGroup);
+
 router.get("/custGroup/:custId", checkAuth,async (req,res)=>{
 const response= await getCustGroups('custGroups', req.params.custId);
   res.status(200).send(response);

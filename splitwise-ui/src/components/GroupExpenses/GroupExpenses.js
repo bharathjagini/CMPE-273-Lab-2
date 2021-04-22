@@ -402,10 +402,11 @@ axios
 if(this.state.comments.length>0)
 {
  displayComments=  this.state.comments.map((comment)=>{
+  const createdDate=moment(comment.createdDate).format("YYYY-MM-DD HH:mm:ss")
    return(
      <div className="displayComments">
        <div className="commentHeader">
-         <span style={{fontWeight:'bold'}}>{comment.createdBy}</span> <span>{comment.createdDate}</span>
+         <span style={{fontWeight:'bold'}}>{comment.createdBy}</span> <span>{createdDate}</span>
          <ClearIcon
               className="deleteComment"
               onClick={()=>this.deleteComment(comment)}
@@ -419,36 +420,36 @@ if(this.state.comments.length>0)
 }
 
 
-if(this.state.enableCommentModal)
-{
-const expense=this.state.selectedExpense;
-  commentModal=(  <div className="expCmntModal"> 
-     <div className="expCmntContent">
-       <div className="popupHader">
-         {/* Add Notes and Comments for {expense.expenseDesc} */}
+// if(this.state.enableCommentModal)
+// {
+// const expense=this.state.selectedExpense;
+//   commentModal=(  <div className="expCmntModal"> 
+//      <div className="expCmntContent">
+//        <div className="popupHader">
+//          {/* Add Notes and Comments for {expense.expenseDesc} */}
          
-            {/* <ClearIcon
-              className="closePopup"
-              onClick={this.closeCommentModal}
-            /> */}
-         </div>
-         <div className="comments">
-        <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
-        {displayComments}
-        <div className="newComment">
-         <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
-         rows="2" cols="10" placeholder="Add comment"
-         onChange={this.commentChanged} value={this.state.commentDesc}
-         ></textarea>
-         <br/>
-         <button className="postCmntBtn" onClick={this.postComment}>Post</button>
-         </div>
-      </div>
-      </div>
-      </div>)
+//             {/* <ClearIcon
+//               className="closePopup"
+//               onClick={this.closeCommentModal}
+//             /> */}
+//          </div>
+//          <div className="comments">
+//         <h4 style={{color:'#999',marginTop:'10px'}}>Notes and Comments</h4>
+//         {displayComments}
+//         <div className="newComment">
+//          <textarea style={{ marginLeft:'1px', width:'200px',fontSize:'13px'}} 
+//          rows="2" cols="10" placeholder="Add comment"
+//          onChange={this.commentChanged} value={this.state.commentDesc}
+//          ></textarea>
+//          <br/>
+//          <button className="postCmntBtn" onClick={this.postComment}>Post</button>
+//          </div>
+//       </div>
+//       </div>
+//       </div>)
 
 
- }
+//  }
 
 //==========================================
 
@@ -516,8 +517,8 @@ if(expense._id===groupExpense._id)
 //========================
 
 
-        const d=moment(groupExpense.created_date)
-        const month=moment(d.month()+1,'MM').format('MMMM')
+       
+     //   const month=moment(d.month()+1,'MM').format('MMMM')
   const createdDate=moment(groupExpense.createdDate).format("YYYY-MM-DD HH:mm:ss")
         const groupSize=this.state.otherCustGrpPayList.length;
         const currencyNumber=currency+numeral(groupExpense.amount).format("0.00");
@@ -705,7 +706,7 @@ if(this.state.enableExpModal){
              
             {groupExpenses}
             {expModal}
-            {commentModal}
+           
             </div>
         </div>
         <div className="right-side" style={{float:'right'}} >

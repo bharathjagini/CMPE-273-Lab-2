@@ -78,7 +78,6 @@ updateProfDtls:async (updateProfDtlsReq)=>{
     console.log(updateProfDtlsReq)
     const updateProfDtls=JSON.parse(updateProfDtlsReq.profDtls)
     //var s3 = new AWS.S3();
-    if( updateProfDtlsReq.image!==undefined){
    var base64data1 = new Buffer(updateProfDtlsReq.image.buffer, 'binary');
     const base64data = updateProfDtlsReq.image.buffer.toString('base64');
     const s3 = new AWS.S3({
@@ -97,7 +96,7 @@ updateProfDtls:async (updateProfDtlsReq)=>{
           console.log("Error", err);
         }
         console.log('File uploaded successfully.',data.Location);
-        customer.findByIdAndUpdate(updateProfDtls.custId, { custPhoneNumber:updateProfDtls.custPhnNmbr,
+        customer.findByIdAndUpdate(updateProfDtls.custId, { custPhoneNumber:updateProfDtls.custPhoneNumber,
             currencyId:updateProfDtls.currencyId,timezoneId:updateProfDtls.timezoneId,languageId:updateProfDtls.languageId,custName:updateProfDtls.custName,
         image:data.Location },{new: true},
         function (err, updatedCustomer) {
@@ -114,22 +113,6 @@ return resolve(updatedCustomer)
 
 
 })
-    }
-    else
-    {
-        customer.findByIdAndUpdate(updateProfDtls.custId, { custPhoneNumber:updateProfDtls.custPhnNmbr,
-            currencyId:updateProfDtls.currencyId,timezoneId:updateProfDtls.timezoneId,languageId:updateProfDtls.languageId,custName:updateProfDtls.custName
-         },{new: true},
-        function (err, updatedCustomer) {
-if (err){
-console.log(err)
-}
-else{
-console.log("Updated User : ", updatedCustomer);
-return resolve(updatedCustomer)
-}
-    })
-}
 })
 }
 

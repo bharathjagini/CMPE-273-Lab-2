@@ -4,7 +4,6 @@ module.exports={
 
 grpDashboardAmountDetails : async (customerId) => {
     
-  console.log("customerId",customerId)
     
     let groupIds = [];
        
@@ -83,9 +82,9 @@ grpDashboardAmountDetails : async (customerId) => {
         grpMemOweList:grpMemOweList,
         eachCustOweList:eachCustOweList
        }
-       return new Promise((resolve,reject)=>{
-        return resolve(dashboardDtls)
-    })
+       
+        return dashboardDtls;
+    
      }
      else
    {
@@ -96,9 +95,7 @@ grpDashboardAmountDetails : async (customerId) => {
         grpMemOweList:[],
         eachCustOweList:[]
        }
-       return new Promise((resolve,reject)=>{
-        return resolve(dashboardDtls)
-    })
+       return dashboardDtls;
     }
    
            
@@ -187,7 +184,7 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
               {
                noTxn=noTxn.filter(txn=>txn.paidByCustId!==txnCustId)
               }
-              console.log('no txn::',noTxn);
+             if(noTxn.length>0){
               const otherTxns= [...new Set(noTxn.map(txn=>txn.paidByCustId))]
         
               for(const otherTxn of otherTxns)
@@ -206,7 +203,7 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
                     amount:-amount 
                 }
                 noTxnList.push(oweTxn);
-              }
+              }}
          return resolve(noTxnList);
         })
         },

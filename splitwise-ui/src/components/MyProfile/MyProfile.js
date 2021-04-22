@@ -197,7 +197,8 @@ uploadImageinDB=()=>{
         console.log("Status Code : ", response.status);
         if (response.status === 200) {
        
-          const updatedCustdetails=this.state.custDetails;
+          let updatedCustdetails=this.state.custDetails;
+          updatedCustdetails.custPhnNmbr=response.data.custPhoneNumber;
          console.log(response.data)
  
          if(this.state.imageUploaded){
