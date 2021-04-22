@@ -55,12 +55,17 @@ class CreateGroup extends Component {
   };
   memberNameChanged = (e, id) => {
     console.log(id);
+    
+    let custEmail,custId, groupMember;
     const allCustomerDetails=this.state.allCustomerDetails;
     const custIndex=allCustomerDetails.findIndex(cust=>cust.custName===e.target.value);
-    const custEmail=allCustomerDetails[custIndex].custEmail;
-    const custId=allCustomerDetails[custIndex]._id;
+    if(custIndex>-1){
+     custEmail=allCustomerDetails[custIndex].custEmail;
+     custId=allCustomerDetails[custIndex]._id;
+    
+    
     let groupMembers = this.state.groupMembers;
-    let groupMember;
+   
     const groupMemberIndex = groupMembers.findIndex(member => member.id === id);
     console.log(typeof groupMember);
     if (groupMemberIndex === -1) {
@@ -77,10 +82,27 @@ class CreateGroup extends Component {
       });
     } else {
       groupMembers[groupMemberIndex].name = e.target.value;
+      groupMembers[groupMemberIndex].email = custEmail;
       this.setState({
         groupMembers: groupMembers
       });
     }
+  }
+  else{
+    const groupMember = {
+      id: id,
+      name: e.target.value,
+      email: '',
+      custId:0
+    };
+    let groupMembers = this.state.groupMembers;
+    const groupMemberIndex = groupMembers.findIndex(member => member.id === id);
+    groupMembers[groupMemberIndex]=groupMember;
+    this.setState({
+      groupMembers:groupMembers
+    })
+    alert("Customer not registered yet")
+  }
     console.log(this.state.groupMembers);
   };
 
@@ -228,7 +250,7 @@ class CreateGroup extends Component {
   };
 
   render() {
-    console.log(this.state.custDetails);
+  //  console.log(this.state.custDetails);
     let groupMemberDetails = null;
     let initialGroupMembers = null;
     let userList=null;
