@@ -105,7 +105,8 @@ componentDidMount() {
   console.log(typeof groupId)
   if(groupId>0){
    
-   const recentActivityList=this.state.recentActivity.filter(activity=>activity.groupId._id===groupId);
+    const recentActLog=this.state.recentActivity.filter(activity=>activity.activityType==='created'||activity.activityType==='paid')
+   const recentActivityList=recentActLog.filter(activity=>activity.groupId._id===groupId);
    console.log(recentActivityList.length,this.state.paginationDefault);
    console.log(Math.ceil(recentActivityList.length/this.state.paginationDefault));
  
@@ -164,7 +165,8 @@ sortPagination=(groupId)=>{
   console.log(typeof groupId)
   if(groupId>0){
    
-   const recentActivityList=this.state.recentActivity.filter(activity=>activity.groupId._id===groupId);
+    const recentActLog=this.state.recentActivity.filter(activity=>activity.activityType==='created'||activity.activityType==='paid')
+    const recentActivityList=recentActLog.filter(activity=>activity.groupId._id===groupId);
    console.log(recentActivityList.length,this.state.paginationDefault);
    console.log(Math.ceil(recentActivityList.length/this.state.paginationDefault));
  
@@ -261,8 +263,9 @@ recentActivity:recentActivityList
    
     if(this.state.selectedGroupId>0)
     {
-      
-      grpRecentActivity= this.state.recentActivity.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
+      const recentActLog=this.state.recentActivity.filter(activity=>activity.activityType==='created'||activity.activityType==='paid')
+    grpRecentActivity=recentActLog.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
+     // grpRecentActivity= this.state.recentActivity.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
 
       if(grpRecentActivity!==undefined)
       for(let i=1;i<=Math.ceil(grpRecentActivity.length/newPaginationValue);i++)
@@ -300,7 +303,8 @@ recentActivity:recentActivityList
     const recentActiviy=this.state.recentActivity;
 if(this.state.selectedGroupId>0)
 {
-  grpRecentActivity= recentActiviy.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
+  const recentActLog=this.state.recentActivity.filter(activity=>activity.activityType==='created'||activity.activityType==='paid')
+  grpRecentActivity= recentActLog.filter(activity=>activity.groupId._id===this.state.selectedGroupId);
   activityPaginated=grpRecentActivity.slice(indexOfFirstExp,indexOfLastExp);
 }
 else{
@@ -316,6 +320,9 @@ else{
     //let recentActivityList=this.state.recentActivity;
      let recentActivityList=this.state.activityPaginated;
      let currency=this.state.custDetails.currencyValue;
+    //  let paid=null;
+    //  let created=null;
+    //  let settled=null;
     if(this.state.groupDetails.length>0)
     {
       console.log('asdf')
@@ -355,7 +362,9 @@ else{
       recentActivity=recentActivityList.map((activity,index)=>{
         let owe=null;
         let getsBack=null;
+        let paid=null,settled=null,created=null;
        let custAdded=this.state.custDetails.custName.trim().toUpperCase()===activity.createdByCustId.custName.trim().toUpperCase() ?'You':activity.createdByCustId.custName;
+       if(activity.activityType==='paid'){
       let recentActAmount=activity.actAmount;
       if(recentActAmount<0){
         recentActAmount=numeral(Math.abs(recentActAmount)).format("0.00");
@@ -367,16 +376,46 @@ else{
           getsBack=(<span style={{color:'#5bc5a7'}} >You get back {currency}{recentActAmount}</span>)
         
       }
+      paid=( <div>
+        <span style={{fontWeight:'bold'}}>{custAdded} </span>
+        <span>added </span>
+        "<span style={{fontWeight:'bold'}}>{activity.expenseDesc} </span>" in
+        <span> {activity.groupId.groupName} </span><br/>
+    {owe}{getsBack}
+     </div>
+      )
+    }
+    else if(activity.activityType==='settled'){
+      let custSettled=this.state.custDetails.custName.trim().toUpperCase()===activity.settledWithCustId.custName.trim().toUpperCase() ?'You':activity.createdByCustId.custName;
+      settled=(<div>
+        <span style={{fontWeight:'bold'}}>{custAdded} </span>
+        <span>settled amount with </span>
+        <span style={{fontWeight:'bold'}}>{custSettled} </span>
+       
+    
+     </div>)
+    }
+    else if(activity.activityType==='created'){
+      created=(<div>
+        <span style={{fontWeight:'bold'}}>{custAdded} </span>
+        <span>created group </span>
+        <span> {activity.groupId.groupName} </span><br/>
+    
+     </div>)
+    }
        return(<div className="flex-item" key={activity._id}>
           
           <img  className="expImg" alt="splitwise" src={expenseDefault}/>
-          <div>
+          {paid}
+          {created}
+          {settled}
+          {/* <div>
             <span style={{fontWeight:'bold'}}>{custAdded} </span>
             <span>added </span>
             "<span style={{fontWeight:'bold'}}>{activity.expenseDesc} </span>" in
             <span> {activity.groupId.groupName} </span><br/>
         {owe}{getsBack}
-         </div>
+         </div> */}
           </div>);
         
       });

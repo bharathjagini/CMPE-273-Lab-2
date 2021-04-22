@@ -1,15 +1,18 @@
 const CustGrpExp=require('../Models/CustGrpExpModel');
 const activityLogSvc=require('./ActivityLogSvc');
 const ActivityLog=require('../Models/ActivityLogModel')
+const autoSeq=require('../controller/AutoSeq.controller');
 module.exports={
 
     settleUp : async (settleUpReq) => {
         // Validate request
-       
+       console.log("settleUpReq",settleUpReq)
         const settleUpCustId=Number(settleUpReq.settleUpCustId);
         const loggedInCustId=Number(settleUpReq.loggedInCustId);
-        
+       
+         //  const groupId=await module.exports.getGroupId(settleUpReq.settleUpCustId,settleUpReq.loggedInCustId)
         const custIds=[settleUpCustId,loggedInCustId];
+        console.log('custids:',custIds)
         const settleUpResponse=await module.exports.settleTxnDb(custIds);
 
         const actLogId=await autoSeq.getSequenceValue('activityLog');
@@ -17,7 +20,7 @@ module.exports={
         _id:actLogId,
         createdBy:settleUpReq.custName,
         createdDate:new Date(),
-        createdByCustId:ettleUpReq.loggedInCustId,
+        createdByCustId:settleUpReq.loggedInCustId,
         activityType:'settled',
         settledWithCustId:settleUpReq.settleUpCustId             
       }) 
@@ -30,11 +33,11 @@ module.exports={
       settleTxnDb:(custIds)=>{
 
 
-        CustGrpExp.updateMany({"paidByCustId":{$in:custIds},"oweByCustId":{$in:custIds}},
+        CustGrpExp.updateMany({'$and':[{"paidByCustId":{$in:custIds}},{"oweByCustId":{$in:custIds}}]},
         {"settledUp":true},{multi:true}).exec((err,res)=>{
             if(err)
             {
-
+console.log(err);
             }
             else
             {
@@ -43,6 +46,11 @@ module.exports={
         })
   
 
+      },
+      getGroupId:()=>{
+return new Promise((resolve,reject)=>{
+    3
+})
       },
      
 }
