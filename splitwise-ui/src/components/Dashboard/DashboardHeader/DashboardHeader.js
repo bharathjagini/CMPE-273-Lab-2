@@ -176,28 +176,33 @@ this.setState({
   })
   }
     }
-    if(typeof this.state.settleUsersGroup!==undefined){
-  
-      if(this.state.settleUsersGroup.length>0)
-      {
-        
-  this.state.settleUsersGroup.map((user,index)=>{
+    
     if(typeof this.state.oweDetails!==undefined){
   
       if(this.state.oweDetails.eachCustOweList.length>0)
       {
+      
+        console.log('eachcust',this.state.oweDetails.eachCustOweList)
         
-  settleUpMembers=this.state.oweDetails.eachCustOweList.map((member,index)=>{
-    if(member.custId===user.custId._id)
+        settleUpMembers= this.state.oweDetails.eachCustOweList.map((member,index)=>{
+          let custSelect=null;
+          const memberIndex=this.state.settleUsersGroup.findIndex(user=>user.custId._id===member.custId);
+          if(memberIndex>-1)
+       {   
+          console.log('matched1')
     return (
       <option value={member.custId}>{member.custName}</option>
     );
+       }
+       else{
+         return;
+       }
+    
+   
   })
   }
       }
-  })
-  }
-      }
+      console.log('settleUpMembers',settleUpMembers)
    
     return (
       <div className="dashboardHeader">

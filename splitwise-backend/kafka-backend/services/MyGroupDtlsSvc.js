@@ -41,7 +41,7 @@ acceptInvite:async(accInvReq)=>{
 
     })
 },
-deleteGroup:async (delGrpReq)=>{
+exitGroup:async (delGrpReq)=>{
 
     
     const custId=Number(delGrpReq.custId);
