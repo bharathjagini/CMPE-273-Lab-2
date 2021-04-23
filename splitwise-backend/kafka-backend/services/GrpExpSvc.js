@@ -201,6 +201,20 @@ let custName;
 
 createComment:async (createCommentReq)=>{
       const commentId=await autoSeq.getSequenceValue('expCmmnt');
+
+      const actLogId=await autoSeq.getSequenceValue('activityLog');
+      const activity=new ActivityLog({
+        _id:actLogId,
+        createdBy:createCommentReq.createdBy,
+        groupId:createCommentReq.groupId,
+        createdDate:new Date(),
+        createdByCustId:createCommentReq.createdByCustId,
+        activityType:'comment',
+        expenseId:createCommentReq.expenseId,
+        expenseDesc:createCommentReq.commentDesc
+      }) 
+      const activityLogRes=await activityLogSvc.saveActivity(activity)
+
       return new Promise((resolve,reject)=>{
 const expComment=new ExpCmnt({
 _id:commentId,

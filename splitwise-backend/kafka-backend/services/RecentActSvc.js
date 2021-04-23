@@ -23,7 +23,7 @@ recentActivity:async(recActReq)=>{
           if(expense.activityType==='paid'){
          const expenseTxn= loggedInCustTxns.filter(
             txn=>
-            txn.expenseId===expense._id
+            txn.expenseId===expense.expenseId
         );
       
       const paidAmount=    expenseTxn.filter(txn=>txn.paidByCustId===custId)
@@ -35,6 +35,8 @@ recentActivity:async(recActReq)=>{
           .map(txn => txn.amount)
           .reduce((prev, curr) => prev + curr, 0);
           
+          console.log('paidAmount',paidAmount)
+          console.log('oweAmount',oweAmount)
           const actAmount=(paidAmount-oweAmount).toFixed(2);
         
           console.log('act amount',actAmount)

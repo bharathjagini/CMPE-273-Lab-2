@@ -8,13 +8,16 @@ import cookie from "react-cookies";
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    console.log("props:",props)
     this.state = {
       custDetails:this.props.custDetails,
+      groupDetails: this.props.groupDetails,
       oweDetails:{
         loggedInCustOweAmount:0,
         loggedInCustPaidAmount:0,
         allGrpMemOweList:[],
         eachCustOweList:[]
+       
       },
       isDataLoaded:false
     };
@@ -75,7 +78,7 @@ this.fetchDashboardDtls();
       <div className="dashboard">
         <section>
           <div className="center-divider">
-            <DashboardHeader  custDetails={this.state.custDetails} oweDetails={this.state.oweDetails} isDataLoaded={this.state.isDataLoaded}
+            <DashboardHeader  custDetails={this.state.custDetails} oweDetails={this.state.oweDetails}  groupDetails={this.state.groupDetails} isDataLoaded={this.state.isDataLoaded}
               settleUp={this.settleUp}
             />
             {this.state.isDataLoaded ? <DashboardExpSummary custDetails={this.state.custDetails} oweDetails={this.state.oweDetails}/>: 'loading'}

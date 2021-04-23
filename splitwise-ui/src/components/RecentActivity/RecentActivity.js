@@ -362,7 +362,7 @@ else{
       recentActivity=recentActivityList.map((activity,index)=>{
         let owe=null;
         let getsBack=null;
-        let paid=null,settled=null,created=null;
+        let paid=null,settled=null,created=null,commented=null;
        let custAdded=this.state.custDetails.custName.trim().toUpperCase()===activity.createdByCustId.custName.trim().toUpperCase() ?'You':activity.createdByCustId.custName;
        if(activity.activityType==='paid'){
       let recentActAmount=activity.actAmount;
@@ -395,6 +395,17 @@ else{
     
      </div>)
     }
+    else if(activity.activityType==='comment'){
+      let custCommented=this.state.custDetails.custName.trim().toUpperCase()===activity.createdByCustId.custName.trim().toUpperCase() ?'You':activity.createdByCustId.custName;
+       commented=(<div>
+        <span style={{fontWeight:'bold'}}>{custCommented} </span>
+        <span>commented on </span>
+        "<span style={{fontWeight:'bold'}}>{activity.groupId.groupName} </span>":
+        <span>{activity.expenseDesc} </span>
+       
+    
+     </div>)
+    }
     else if(activity.activityType==='created'){
       created=(<div>
         <span style={{fontWeight:'bold'}}>{custAdded} </span>
@@ -409,6 +420,7 @@ else{
           {paid}
           {created}
           {settled}
+          { commented}
           {/* <div>
             <span style={{fontWeight:'bold'}}>{custAdded} </span>
             <span>added </span>

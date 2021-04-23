@@ -45,6 +45,7 @@ const {kafka} = require('../kafka');
     updateProfDtls=await k.updateProfDtls;
     dashboardDtls=await k.dashboardDtls;
     settleUp=await k.settleUp;
+    userGrpDtls=await k.userGrpDtls;
 } else {
   
     callAndWait = async (fn, ...params) => loginSignup[fn](...params);
@@ -188,7 +189,14 @@ const response= await recentActivity('recentActivity', req.body);
 
   });
 
-  router.post("/updateProfDtls/:custId",upload.single('file'), async (req,res)=>{
+  router.get("/usersGroup",checkAuth, async (req,res)=>{
+       
+    const response= await userGrpDtls('settleGroupDtls', req.query.groupId);
+      res.status(200).send(response);
+    
+      });
+
+  router.post("/updateProfDtls/:custId",checkAuth,upload.single('file'), async (req,res)=>{
     const profileUpdateReq={
       image:req.file,
       profDtls:req.body.profDtls
@@ -199,24 +207,25 @@ const response= await recentActivity('recentActivity', req.body);
     
       });
 
-      router.get("/dashboardDtls/:custId", async (req,res)=>{
+      router.get("/dashboardDtls/:custId",checkAuth, async (req,res)=>{
        
         const response= await dashboardDtls('grpDashboardAmountDetails', req.params.custId);
           res.status(200).send(response);
         
           });
 
-      router.post("/settleup", async (req,res)=>{
+      router.post("/settleup", checkAuth,async (req,res)=>{
        
             const response= await settleUp('settleUp', req.body);
               res.status(200).send(response);
             
               });
     
+      
+        
 
 
-
-  
+         
 
 
 

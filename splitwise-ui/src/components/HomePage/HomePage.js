@@ -152,8 +152,9 @@ getUserCurrency=()=>{
     
   }
   componentDidUpdate(prevProps,prevState){
-//     if(prevProps.userGroupDetailsList!==this.props.userGroupDetailsList){
-//       console.log('need to fetch grp list')
+    //  if(prevState.userGroupDetailsList!==this.state.userGroupDetailsList){
+    //    console.log('need to fetch grp list')
+    //  }
 //     }
 //     console.log('comopnnet updated')
 // console.log(this.props);

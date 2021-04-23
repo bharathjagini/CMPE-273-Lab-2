@@ -288,11 +288,13 @@ alert("Please enter comment to post")
 else
 {
 const selectedExpense=this.state.selectedExpense;
+console.log('selectedExpense',selectedExpense)
 const createCommentReq={
   expenseId:selectedExpense._id,
   createdBy:this.state.custDetails.custName,
   createdByCustId:this.state.custDetails.custId,
-  commentDesc:commentDesc
+  commentDesc:commentDesc,
+  groupId:selectedExpense.groupId
 }
 axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
  axios
@@ -704,7 +706,7 @@ if(this.state.enableExpModal){
                 {/* <div className="monthDivider">
                  <span>March 2021</span>
              </div> */}
-            </div>
+            </div> 
              
             {groupExpenses}
             {expModal}

@@ -11,6 +11,7 @@ console.log(props);
     super(props);
     this.state = {
       custDetails:this.props.custDetails,
+      groupDetails: this.props.groupDetails,
     oweDetails:this.props.oweDetails,
       // oweDetails:{
       //   loggedInCustOweAmount:this.props.oweDetails.loggedInCustOweAmount,
@@ -20,7 +21,9 @@ console.log(props);
       // },
       settleUpModal:false,
       isDataLoaded:this.props.isDataLoaded,
-      selectedMemberId:0
+      selectedMemberId:0,
+      selectedGroupId:0,
+      settleUsersGroup:[]
     };
   }
   componentWillMount(){
@@ -50,6 +53,43 @@ console.log(props);
     this.setState({
       selectedMemberId:selectedMemberId
     })
+  }
+  settleUpGroupChanged=(e)=>{
+const selectedGroupId=Number(e.target.value);
+console.log('selectedGroupId',selectedGroupId)
+this.setState({
+  selectedGroupId:selectedGroupId
+})
+if(Number(selectedGroupId)>0)
+{
+  console.log('inside selected')
+  this.fetchCustForGroup(selectedGroupId)
+  
+}
+  }
+
+  fetchCustForGroup=(selectedGroupId)=>{
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+  axios
+   .get(
+     config.backEndURL+"/users/usersGroup?groupId="+selectedGroupId )
+   .then(response => {
+     console.log("Status Code : ", response.status);
+     if (response.status === 200) {
+       console.log(response.data);
+     this.setState({
+      settleUsersGroup:response.data
+     })
+       
+     }
+   })
+   .catch(error => {
+     console.log(error);
+     // this.setState({
+     //   signUpDone: false,
+     //   errorMsg: error.response.data.errorDesc
+   });
+
   }
 
   settleTxns=()=>{
@@ -121,21 +161,44 @@ this.setState({
 
   render() {
     let settleUpMembers=null;
+    let settleUpGroups=null;
     
     console.log('changed',this.state);
-    
+    if(typeof this.state.groupDetails!==undefined){
+      if(this.state.groupDetails.length>0)
+      {
+        
+        settleUpGroups=this.state.groupDetails.map((group,index)=>{
+          
+    return (
+      <option value={group.groupId._id}>{group.groupId.groupName}</option>
+    );
+  })
+  }
+    }
+    if(typeof this.state.settleUsersGroup!==undefined){
+  
+      if(this.state.settleUsersGroup.length>0)
+      {
+        
+  this.state.settleUsersGroup.map((user,index)=>{
     if(typeof this.state.oweDetails!==undefined){
   
-    if(this.state.oweDetails.eachCustOweList.length>0)
-    {
-      
-settleUpMembers=this.state.oweDetails.eachCustOweList.map((member,index)=>{
-  return (
-    <option value={member.custId}>{member.custName}</option>
-  );
-})
-}
-    }
+      if(this.state.oweDetails.eachCustOweList.length>0)
+      {
+        
+  settleUpMembers=this.state.oweDetails.eachCustOweList.map((member,index)=>{
+    if(member.custId===user.custId._id)
+    return (
+      <option value={member.custId}>{member.custName}</option>
+    );
+  })
+  }
+      }
+  })
+  }
+      }
+   
     return (
       <div className="dashboardHeader">
         <div className="dashboardHeaderData">
@@ -154,6 +217,13 @@ settleUpMembers=this.state.oweDetails.eachCustOweList.map((member,index)=>{
               onClick={this.closeSettleUpModal}
             />
          </div>
+         <div className="selectGroups">
+           <span>Select Group you want to settle amount</span><br/>
+           <select className="drpDwn" name="groupName" value={this.state.selectedGroupId} onChange={this.settleUpGroupChanged}>
+             <option value="0">Select Group</option>
+             {settleUpGroups}
+           </select>
+</div>     
          <div className="selectMembers">
            <span>Select Member below you want to settle with</span><br/>
            <select className="drpDwn" name="groupName" value={this.state.selectedMemberId} onChange={this.settleUpNameChanged}>

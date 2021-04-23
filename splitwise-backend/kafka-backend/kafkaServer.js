@@ -255,5 +255,18 @@ const settleTxn=require('./services/SettledUpSvc');
                 },
             );
     }, 'Settle txn with customer');
+
+    k.subscribe(topics.USR_GRP_API, ({ fn, params, token }) => {
+        
+        settleTxn[fn](...params)
+            .then(
+                (resp) => {
+                    k.send(topics.USR_GRP_RES, { token, resp, success: true });
+                },
+                (resp) => {
+                    k.send(topics.USR_GRP_RES, { token, resp, success: false });
+                },
+            );
+    }, 'Fetch users for group');
     
 })();

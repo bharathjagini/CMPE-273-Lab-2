@@ -35,6 +35,7 @@ grpDashboardAmountDetails : async (customerId) => {
         let allGrpMemOweList = [];
         let grpMemOweList=[];
         let eachCustOweList=[];
+        //let eachCustOweList1=[];
         for (const grpDtl of grpDtls) {
        //     console.log('grpDtl:',grpDtl);
           const grpMemOweTxnList = custMemberTxnList.filter(
@@ -55,7 +56,17 @@ grpDashboardAmountDetails : async (customerId) => {
           const noTxnByCustList= await module.exports.noTxnPaidByLoggedInCust(loggedInCustPaidTxnList,grpMemOweTxnList,grpDtl,custId,custDetailsList);
           if(noTxnByCustList.length>0)
           {
-            eachCustOweList=noTxnByCustList;
+           // eachCustOweList.push(noTxnByCustList)
+           noTxnByCustList.map(txn=>{
+            const prevOweIndex= eachCustOweList.findIndex(eachCust=>eachCust.custId===txn.custId);
+            if(prevOweIndex>-1)
+            eachCustOweList[prevOweIndex].amount=eachCustOweList[prevOweIndex].amount+txn.amount;
+            else
+           // eachCustOweList.push(eactCustOweDtls)
+            eachCustOweList.push(txn)
+           })
+          //x  eachCustOweList=noTxnByCustList;
+           // eachCustOweList1.push(eachCustOweList)
             continue;
       
      
@@ -64,12 +75,15 @@ grpDashboardAmountDetails : async (customerId) => {
          let oweDtls=  await module.exports.getOtherGrpMemOwePaidDtls(
            loggedInCustPaidTxnList,
            grpMemOweTxnList,grpDtl,
-           custDetailsList
+           custDetailsList,
+           eachCustOweList
          );
          
          otherCustGrpPayList=oweDtls.otherCustGrpPayList;
          eachCustOweList=[...oweDtls.eachCustOweList,...noTxnByCustList]
+       
          
+         console.log('eachCustOweList::',eachCustOweList)
        //  console.log('74',otherCustGrpPayList);
         
         if(otherCustGrpPayList.length>0)
@@ -192,7 +206,7 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
         
               for(const otherTxn of otherTxns)
               {
-                
+                console.log('other txn:',otherTxn)
               const eachPerson=  noTxn.filter(txn=>txn.paidByCustId===otherTxn);
            //   console.log('each person',eachPerson)
               const amount=eachPerson.map(txn => txn.amount)
@@ -213,12 +227,14 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
         getOtherGrpMemOwePaidDtls : async (
             loggedInCustPaidTxnList,
             custGrpMemberTxnList,grpDtl,
-            custDetailsList
+            custDetailsList,
+            prevOweList
           ) => {
             let otherCustGrpPayList = [];
             let dummy;
             let checkDuplicateTxn = [];
-            let eachCustOweList=[];
+           let eachCustOweList=[];
+           console.log('prevOweList',prevOweList)
             for (const txnDtls of loggedInCustPaidTxnList) {
             //    let otherCustGrpMemDtls;
               dummy = {
@@ -244,6 +260,8 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
                 custDetailsList
               );
            
+       
+
               console.log(otherCustGrpMemDtls)
               if(eachCustOweList.length>0)
               {
@@ -256,6 +274,11 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
                 custName:otherCustGrpMemDtls.custName,
                 amount:otherCustGrpMemDtls.amount
               }
+              const prevOweIndex= prevOweList.findIndex(prevOwe=>prevOwe.custId===otherCustGrpMemDtls.custId);
+              if(prevOweIndex>-1)
+              prevOweList[prevOweIndex].amount=prevOweList[prevOweIndex].amount+otherCustGrpMemDtls.amount;
+              else
+              prevOweList.push(eactCustOweDtls)
                eachCustOweList.push(eactCustOweDtls);
               }
             }
@@ -266,14 +289,19 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
                 custName:otherCustGrpMemDtls.custName,
                 amount:otherCustGrpMemDtls.amount
               } 
-              //console.log('eactCustOweDtls:',eactCustOweDtls)
+              console.log('eactCustOweDtls:',eactCustOweDtls)
+              const prevOweIndex= prevOweList.findIndex(prevOwe=>prevOwe.custId===otherCustGrpMemDtls.custId);
+              if(prevOweIndex>-1)
+              prevOweList[prevOweIndex].amount=prevOweList[prevOweIndex].amount+otherCustGrpMemDtls.amount;
+              else
+              prevOweList.push(eactCustOweDtls)
               eachCustOweList.push(eactCustOweDtls);
             }
             }
-            //console.log("eachCustOweList:",eachCustOweList)
+            console.log("eachCustOweList:",eachCustOweList)
             let oweDtls={
           otherCustGrpPayList:otherCustGrpPayList,
-          eachCustOweList:eachCustOweList
+          eachCustOweList:prevOweList
             }
             return oweDtls;
           },
@@ -312,7 +340,7 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
                 otherCustGrpMemDtls = {
                   custId: txnDtls.oweByCustId,
                   custName: custName,
-                  amount: otherCustGrpMemPayableAmnt.toFixed(2),
+                  amount: Number(otherCustGrpMemPayableAmnt.toFixed(2)),
                   groupName:grpDtl.groupId.groupName,
                   groupId:txnDtls.groupId._id
           
@@ -323,7 +351,7 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
                 otherCustGrpMemDtls = {
                   custId: txnDtls.oweByCustId,
                  custName: custName,
-                  amount: otherCustGrpMemPayableAmnt,
+                  amount: Number(otherCustGrpMemPayableAmnt),
                   groupName:grpDtl.groupId.groupName,
                   groupId:txnDtls.groupId._id
                 };
@@ -336,7 +364,10 @@ getLoggedInCustAmountdtls:(custMemberTxnList, custId) => {
           },
         getCustName:(custId,custDetailsList)=>{
  
-           return custDetailsList.find(custDetail=>custDetail._id===custId).custName;
+           const custIndex= custDetailsList.findIndex(custDetail=>custDetail._id===custId);
+           console.log(custIndex)
+           if(custIndex>-1)
+           return custDetailsList[custIndex].custName;
             
            
             

@@ -2,6 +2,7 @@ const CustGrpExp=require('../Models/CustGrpExpModel');
 const activityLogSvc=require('./ActivityLogSvc');
 const ActivityLog=require('../Models/ActivityLogModel')
 const autoSeq=require('../controller/AutoSeq.controller');
+const CustGroup = require('../Models/CustomerGroupModel');
 module.exports={
 
     settleUp : async (settleUpReq) => {
@@ -47,10 +48,27 @@ console.log(err);
   
 
       },
-      getGroupId:()=>{
-return new Promise((resolve,reject)=>{
-    3
-})
-      },
+      settleGroupDtls :  (groupId)=>{
+        console.log('groupId:',groupId)
+        return new Promise((resolve,reject)=>{
+          console.log('groupId:',groupId)
+          CustGroup.find({"groupId":Number(groupId),"removedMember":false,"inviteAccepted":true}).populate('custId','custName custEmail').populate('groupId','groupName').exec((err,result)=>{
+              if(err) {
+                console.log('err',err)
+          const errorRes={
+                     "code":"E01",
+                     "desc":"Unable to fetch groups for customer"
+                 }
+                  return resolve(errorRes);
+                  //return errorRes;
+              }
+              else{
+               return  resolve(result);
+               //return result;
+              }
+          })
+          })
+        
+      }
      
 }
