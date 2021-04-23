@@ -4,8 +4,8 @@ const crypto = require('crypto');
 const chalk = require('chalk');
 
 const allTopics = {
-    API_CALL: 'api-call-3',
-    API_RESP: 'api-resp-3',
+    API_CALL: 'signup',
+    API_RESP: 'signup-res',
     LOGIN_API:'login-check',
     LOGIN_RES:'login-res',
     CURRENCY_API:'currency-user',
