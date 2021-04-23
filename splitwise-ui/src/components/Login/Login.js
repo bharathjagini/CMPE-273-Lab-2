@@ -95,7 +95,7 @@ class Login extends Component {
     if (this.state.token.length>0) {
       sessionStorage.setItem("token",this.state.token);
       console.log("success");
-      const phoneNumber=this.state.custPhoneNumber?this.state.custPhoneNumber:"";
+      const phoneNumber=this.state.phnNumber?this.state.phnNumber:"";
       const custDetails = {
         loginUserId: this.state.loginUserId,
         custId: this.state.custId,
