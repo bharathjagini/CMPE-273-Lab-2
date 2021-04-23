@@ -20,11 +20,11 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 //const querystring = require("querystring");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-//app.use(cors({ origin: "http://18.191.72.220:3000"", credentials: true }));
+//app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "http://18.191.72.220:3000", credentials: true }));
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
- // res.setHeader("Access-Control-Allow-Origin", "http://18.191.72.220:3000");
+//  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://18.191.72.220:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -58,42 +58,3 @@ app.use(captureRequests);
 // app.use("/profile", profRoutes);
 
 //app.get("/", (req, res) => res.send("Hello World!"));
-
-let userRoutes = require("./routes/userRoutes.js");
-app.use('/users', userRoutes);
-
-
-
-// app.post("/signup", async (req,res)=>{
-
-//   const response= await callAndWait('createCustomer', req.body);
-//   if(response.code==='S01')
-//   res.status(201).send(response);
-//   else
-//   res.status(500).send(response);
-// })
-
-
-app.post("/configDtls",upload.single("file"),(req,res)=>{
-console.log(req.file.originalname);
-  console.log(req.file)
-  console.log(String(req.file.buffer));
-  
-   })
-app.get("/error", (req, res, next) => {
-  // some error in this request
-  let err = true;
-  if (err) {
-    next("Error in the API");
-  } else {
-    res.json({
-      result: "success"
-    });
-  }
-});
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
