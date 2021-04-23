@@ -20,10 +20,11 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 //const querystring = require("querystring");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+//app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "http://18.191.72.220:3000", credentials: true }));
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
- // res.setHeader("Access-Control-Allow-Origin", "http://3.128.27.218:3000");
+//  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://18.191.72.220:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
