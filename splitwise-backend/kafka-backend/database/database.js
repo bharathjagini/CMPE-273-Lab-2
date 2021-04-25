@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    poolSize: 500,
+   // poolSize: 500,
     bufferMaxEntries: 0,
     useFindAndModify:false,
      autoIndex: false 

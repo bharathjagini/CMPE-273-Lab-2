@@ -11,7 +11,7 @@ import {updateUserGrpList}  from "../../../redux/actions/index";
 class CreateGroup extends Component {
   constructor(props) { 
     super(props);
-    // console.log(this.props);
+     console.log(this.props);
     this.state = {
       groupName: "",
       groupMembers: [],

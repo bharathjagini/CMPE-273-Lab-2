@@ -97,8 +97,8 @@ axios
         //   errorMsg: error.response.data.errorDesc
       });
   }
-  componentDidMount() {
-    this.getGroupsForCust();
+ async  componentDidMount() {
+   await this.getGroupsForCust();
     this.getUserCurrency();
  
     const custDetails=JSON.parse(sessionStorage.getItem("custDetails"));
@@ -196,6 +196,7 @@ changedGrpList=(newGrpList)=>{
   console.log('group list changed');
 const userGroupDetailsList=newGrpList.groupList;
 this.props.updateUserGroupDetailsList({userGroupDetailsList})
+sessionStorage.setItem("userGroupDetailsList",JSON.stringify(userGroupDetailsList));
 this.setState({
   userGroupDetailsList:userGroupDetailsList
 })
