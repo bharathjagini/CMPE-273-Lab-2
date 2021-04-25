@@ -372,7 +372,6 @@ function mapDispatchToProps(dispatch) {
   console.log('in dispatch')
   return ({
     updateUserGroupDetailsList:userGroupDetailsList=>dispatch(updateUserGrpList(userGroupDetailsList)),
-    
   });
 }
 export default connect(mapStateToProps,mapDispatchToProps)(CreateGroup);
