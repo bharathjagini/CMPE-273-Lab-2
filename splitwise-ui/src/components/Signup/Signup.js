@@ -144,6 +144,7 @@ class Signup extends Component {
                 type="text"
                 name="name"
                 placeholder="Name"
+                data-testid="custName"
                 onChange={this.custNameChanged}
               />
               {emailAndPasswd}

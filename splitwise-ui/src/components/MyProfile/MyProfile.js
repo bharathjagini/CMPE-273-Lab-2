@@ -139,6 +139,7 @@ componentDidMount(){
     //const groupId=this.state.groupDetails.group_id;
     console.log('curr dtls from store',this.state.currencyDtlsList)
     if(this.state.currencyDtlsList.length>0) return;
+ axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .get(
         config.backEndURL+"/users/configDtls"

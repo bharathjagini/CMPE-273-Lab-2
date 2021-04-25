@@ -6,6 +6,8 @@ import numeral from 'numeral';
 import config from '../../config.json';
 import cookie from "react-cookies";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import {saveRecentAct}  from "../../redux/actions/index";
 class RecentActivity extends Component {
   constructor(props) {
     console.log(props);
@@ -34,6 +36,7 @@ componentDidMount() {
       groupIds:groupIds,
       custId:this.state.custDetails.custId
     }
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
     axios
       .post(
         config.backEndURL+"/users/recentActivity",recentActReq
@@ -50,11 +53,14 @@ componentDidMount() {
            pageNumbers.push(i)
           if(response.data.length>this.state.paginationDefault){
            activityPaginated=response.data.slice(0,this.state.pageNumber*this.state.paginationDefault)
-          this.setState({
+       
+           this.setState({
             recentActivity: response.data,
              activityPaginated:activityPaginated ,
              pageNumbers:pageNumbers  
           });
+          const recentActivity=response.data;
+          this.props.saveRecentAct({recentActivity})
         }
         else{
           this.setState({
@@ -62,6 +68,8 @@ componentDidMount() {
             activityPaginated:response.data ,
               pageNumbers:pageNumbers  
           }); 
+          const recentActivity=response.data;
+          this.props.saveRecentAct({recentActivity})
         }
           console.log(this.state);
         }
@@ -491,4 +499,13 @@ else{
     );
   }
 }
-export default RecentActivity;
+function mapDispatchToProps(dispatch) {
+  console.log('in dispatch')
+  return ({
+  
+    saveRecentAct:recentActivity=>dispatch(saveRecentAct(recentActivity)),
+    
+  });
+}
+export default connect(null,mapDispatchToProps)(RecentActivity);
+//export default RecentActivity;
