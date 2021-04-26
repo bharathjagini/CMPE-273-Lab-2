@@ -268,5 +268,18 @@ const settleTxn=require('./services/SettledUpSvc');
                 },
             );
     }, 'Fetch users for group');
+
+    k.subscribe(topics.CUST_NAME_API, ({ fn, params, token }) => {
+        
+        loginSignup[fn](...params)
+            .then(
+                (resp) => {
+                    k.send(topics.CUST_NAME_RES, { token, resp, success: true });
+                },
+                (resp) => {
+                    k.send(topics.CUST_NAME_RES, { token, resp, success: false });
+                },
+            );
+    }, 'Fetch customers By name');
     
 })();

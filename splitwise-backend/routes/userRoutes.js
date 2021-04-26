@@ -46,6 +46,7 @@ const {kafka} = require('../kafka');
     dashboardDtls=await k.dashboardDtls;
     settleUp=await k.settleUp;
     userGrpDtls=await k.userGrpDtls;
+    customersByName=await k.customersByName;
 } else {
   
     callAndWait = async (fn, ...params) => loginSignup[fn](...params);
@@ -221,8 +222,13 @@ const response= await recentActivity('recentActivity', req.body);
             
               });
     
-      
-        
+        router.get("/customerByName", checkAuth,async (req,res)=>{
+       
+                const response= await customersByName('customersByName', req.query.custName);
+                  res.status(200).send(response);
+                
+                  });
+              
 
 
          

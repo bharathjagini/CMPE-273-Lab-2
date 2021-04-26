@@ -172,6 +172,25 @@ Customer.find({},(err,customerDtls)=>{
         }
 })
        })
+},
+customersByName:async(custName)=>{
+  return new Promise((resolve,reject)=>{
+    const name="/^"+custName+"/";
+    Customer.find({custName:{"$regex":custName}},(err,custDtls)=>{
+      if(err){
+        const errorRes={
+                     "code":"E01",
+                     "desc":"Unable to fetch  customer details"
+                 }
+                return resolve(errorRes);
+              }
+              else{
+                   return resolve(custDtls);
+              }
+      })
+             
+    })
+  
 }
 
 

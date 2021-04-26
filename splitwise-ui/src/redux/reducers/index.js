@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, RESET,CUSTDETAILSUPDATE ,CUSTGRPDETAILSUPDATE,PROFDTLS, RECACTDTLS} from "../constants/action-types";
+import { LOGIN, SIGNUP, RESET,CUSTDETAILSUPDATE ,CUSTGRPDETAILSUPDATE,PROFDTLS, RECACTDTLS,PNDINVLIST} from "../constants/action-types";
 const initialState = {
   custDetails:{
 
@@ -8,7 +8,8 @@ const initialState = {
    currencyDtlsList:[],
    langDetailsList:[],
    timezoneDetailsList:[],
-   recActDtls:{}
+   recActDtls:{},
+   pendingInvites:[]
 
 
  }
@@ -62,6 +63,14 @@ function rootReducer(state = initialState, action) {
       console.log('recent act dtls list', action.payload.recentActivity)
     return Object.assign({}, state, {  
       recActDtls: action.payload.recentActivity
+    });
+
+  }
+  else if(action.type===PNDINVLIST){
+    console.log('prev state',state)
+     // console.log('recent act dtls list', action.payload.recentActivity)
+    return Object.assign({}, state, {  
+      pendingInvites: action.payload.pendingInvites
     });
 
   }

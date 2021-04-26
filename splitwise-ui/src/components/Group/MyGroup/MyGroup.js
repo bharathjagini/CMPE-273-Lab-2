@@ -5,7 +5,7 @@ import { Link, NavLink } from "react-router-dom";
 import config from '../../../config.json';
 import cookie from "react-cookies";
 import { connect } from "react-redux";
-import {updateUserGrpList}  from "../../../redux/actions/index";
+import {updateUserGrpList,pendingInviteList}  from "../../../redux/actions/index";
 
 
 class MyGroup extends Component {
@@ -36,6 +36,8 @@ class MyGroup extends Component {
           this.setState({
             pendingInvites: response.data
           });
+          const pendingInvites=response.data;
+          this.props.pendingInviteList({pendingInvites})
         }
       })
       .catch(error => {
@@ -266,7 +268,7 @@ function mapDispatchToProps(dispatch) {
   return ({
   
     updateUserGroupDetailsList:userGroupDetailsList=>dispatch(updateUserGrpList(userGroupDetailsList)),
-    
+    pendingInviteList:pendingInvites=>dispatch(pendingInviteList(pendingInvites)),
   });
 }
 export default connect(null,mapDispatchToProps)(MyGroup);

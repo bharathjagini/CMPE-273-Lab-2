@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, RESET,CUSTDETAILSUPDATE,CUSTGRPDETAILSUPDATE,PROFDTLS ,RECACTDTLS} from "../constants/action-types";
+import { LOGIN, SIGNUP, RESET,CUSTDETAILSUPDATE,CUSTGRPDETAILSUPDATE,PROFDTLS ,RECACTDTLS,PNDINVLIST} from "../constants/action-types";
 export function login(payload) {
   console.log("dispatching the login action", payload);
   return { type: LOGIN, payload };
@@ -29,4 +29,9 @@ export function saveRecentAct(payload) {
   console.log("dispatching the config details action");
   return { type: RECACTDTLS, payload };
 }
+export function pendingInviteList(payload) {
+  console.log("dispatching the config details action");
+  return { type: PNDINVLIST, payload };
+}
+
 

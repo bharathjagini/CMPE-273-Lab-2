@@ -43,7 +43,9 @@ const allTopics = {
     SETTLE_UP_API:'settle-up',
     SETTLE_UP_RES:'settle-up-res',
     USR_GRP_API:'settle-user-group',
-    USR_GRP_RES:'settle-user-group-res'
+    USR_GRP_RES:'settle-user-group-res',
+    CUST_NAME_API:'cust-name',
+    CUST_NAME_RES:'cust-name-res'
 };
 
 // Example usage
@@ -229,6 +231,12 @@ async function kafka() {
             delete awaitCallbacks[token];
         }
     });
+    subscribe(allTopics.CUST_NAME_RES, ({token, resp, success}) => {
+        if (awaitCallbacks.hasOwnProperty(token)) {
+            awaitCallbacks[token][success ? 0 : 1](resp);
+            delete awaitCallbacks[token];
+        }
+    });
 
     return {
         send,
@@ -356,6 +364,13 @@ async function kafka() {
             awaitCallbacks[token] = [resolve, reject];
             send(allTopics.USR_GRP_API, {fn, params, token});
         }),
+        customersByName: (fn, ...params) => new Promise((resolve, reject) => {
+            const token = crypto.randomBytes(64).toString('hex');
+            console.log('token::,fn,params',token,fn,params)
+            awaitCallbacks[token] = [resolve, reject];
+            send(allTopics.CUST_NAME_API, {fn, params, token});
+        }),
+        
         
     };
 }

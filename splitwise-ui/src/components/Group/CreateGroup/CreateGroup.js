@@ -36,7 +36,7 @@ class CreateGroup extends Component {
         if (response.status === 200) {
           console.log(response);
           this.setState({
-            allCustomerDetails:response.data           
+       //     allCustomerDetails:response.data           
           })   
           console.log(this.state.custDetails);                
         } else {
@@ -54,11 +54,13 @@ class CreateGroup extends Component {
       groupName: name
     });
   };
-  memberNameChanged = (e, id) => {
+  memberNameChanged = async (e, id) => {
     console.log(id);
-    
+    let name=e.target.value;
+const userDetailsList=await this.fetchCustomersByName(name);
+const allCustomerDetails=userDetailsList;
     let custEmail,custId, groupMember;
-    const allCustomerDetails=this.state.allCustomerDetails;
+    //const allCustomerDetails=this.state.allCustomerDetails;
     const custIndex=allCustomerDetails.findIndex(cust=>cust.custName===e.target.value);
     if(custIndex>-1){
      custEmail=allCustomerDetails[custIndex].custEmail;
@@ -102,7 +104,7 @@ class CreateGroup extends Component {
     this.setState({
       groupMembers:groupMembers
     })
-    alert("Customer not registered yet")
+  //  alert("Customer not registered yet")
   }
     console.log(this.state.groupMembers);
   };
@@ -132,7 +134,7 @@ class CreateGroup extends Component {
   };
 
   removeGroupMember = (index, value) => {
-    console.log(index);
+    console.log(value);
     let initialGroup = this.state.initialGroup;
     let groupMembers = this.state.groupMembers;
     initialGroup.splice(index, 1);
@@ -185,7 +187,8 @@ class CreateGroup extends Component {
    let custIds=[];
    if(groupMembers.length>0)
    {
-       custIds= groupMembers.map((member=> member.custId));
+     const filteredGrpMembers=groupMembers.filter(mem=>mem.custId>0);
+       custIds= filteredGrpMembers.map(member=>member.custId );
        custIds.push(loggedInCustId);
        console.log('cust ids',custIds);
    }
@@ -242,14 +245,40 @@ class CreateGroup extends Component {
     })
   }
   createGroup = async () => {
-    const allExistCust=await this.checkExistingUsers();
+  const allExistCust=true;
+    //  const allExistCust=await this.checkExistingUsers();
     console.log(allExistCust);
          if(allExistCust)
          await this.saveGroupInDB()
          else
          alert("Selected customer not registered")
   };
-
+  fetchCustomersByName=(custName)=>{
+    return new Promise((resolve,reject)=>{
+    if(custName.length>0){
+    axios.defaults.headers.common['authorization'] = sessionStorage.getItem('token');
+    axios
+    .get(config.backEndURL+"/users/customerByName?custName="+custName)
+    .then(response => {
+      console.log("Status Code : ", response.status);
+      if (response.status === 200) {
+        console.log(response);
+        this.setState({
+          allCustomerDetails:response.data           
+        })   
+        return resolve(response.data);
+        console.log(this.state.custDetails);                
+      } else {
+        
+      }
+    })
+    .catch(error => {
+      console.log(error.response);
+      alert(error.response.data.message);
+    });
+  }
+})
+  }
   render() {
   //  console.log(this.state.custDetails);
     let groupMemberDetails = null;
