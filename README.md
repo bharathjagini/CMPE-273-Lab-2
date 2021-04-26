@@ -1,4 +1,4 @@
-# Splitiwise CMPE-273-Lab-2
+# Splitwise CMPE-273-Lab-2
 ### Prerequisites
 ### 1.React.Js
 ### 2.Node.Js
