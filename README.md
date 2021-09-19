@@ -1,4 +1,8 @@
-# Splitwise CMPE-273-Lab-2
+# Splitwise Application
+### Architecture Diagram
+![arch](https://user-images.githubusercontent.com/78837340/133941424-52b39816-1e25-4911-b1c2-06d61afefaa6.jpg)
+
+
 ### Prerequisites
 ### 1.React.Js
 ### 2.Node.Js
